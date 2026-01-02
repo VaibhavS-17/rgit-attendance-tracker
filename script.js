@@ -630,7 +630,7 @@ const app = {
             installHtml = `
                 <div style="background: var(--bg-card); border: 1px dashed var(--border); padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 0.85rem; color: var(--text-muted);">
                     <i class="bi bi-phone" style="font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; display: block;"></i>
-                    <strong>Install App:</strong> Tap <i class="bi bi-three-dots-vertical"></i> or <i class="bi bi-share"></i> then <b>"Add to Home Screen"</b>
+                    <strong>Install App:</strong> Tap <i class="bi bi-three-dots-vertical"></i> or <i class="bi bi-share"></i> then select <b>"Install"</b> or <b>"Add to Home Screen"</b>
                 </div>
             `;
         }
