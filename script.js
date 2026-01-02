@@ -327,7 +327,7 @@ const app = {
         this.loadDay(this.selectedDate);
     },
 
-    switchTab: function(tabName) {
+        switchTab: function(tabName) {
         document.getElementById('navDash').classList.toggle('active', tabName === 'dashboard');
         document.getElementById('navSub').classList.toggle('active', tabName === 'subjects');
 
@@ -336,7 +336,12 @@ const app = {
             document.getElementById('statsCard').classList.remove('hidden');
             document.getElementById('subjectList').classList.add('hidden');
             document.getElementById('dateStrip').style.display = 'flex';
-            document.getElementById('pageTitle').innerText = "Dashboard";
+            
+            // --- UPDATED CODE HERE ---
+            const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+            document.getElementById('pageTitle').innerText = months[this.selectedDate.getMonth()];
+            // -------------------------
+
         } else {
             document.getElementById('timelineList').classList.add('hidden');
             document.getElementById('statsCard').classList.add('hidden');
@@ -347,11 +352,18 @@ const app = {
         }
     },
 
-    renderDateStrip: function() {
+        renderDateStrip: function() {
         const strip = document.getElementById('dateStrip');
         strip.innerHTML = '';
         const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         
+        // --- NEW CODE START ---
+        // Update the Page Title to the current Month
+        if (document.getElementById('navDash').classList.contains('active')) {
+            document.getElementById('pageTitle').innerText = months[this.selectedDate.getMonth()];
+        }
+        // --- NEW CODE END ---
+
         for(let i=-3; i<=3; i++) {
             const d = new Date(this.selectedDate);
             d.setDate(this.selectedDate.getDate() + i);
