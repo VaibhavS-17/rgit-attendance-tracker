@@ -555,9 +555,9 @@ const app = {
         this.loadDay(this.selectedDate);
     },
 
-        renderSubjects: function() {
+            renderSubjects: function() {
         const container = document.getElementById('subjectList');
-        container.innerHTML = ''; // This clears the old list
+        container.innerHTML = ''; 
         const subjects = Object.keys(RGIT_DATA.subjects);
         
         // 1. Generate Subject Cards
@@ -614,13 +614,20 @@ const app = {
             `;
         });
 
-        // 2. ADD THE RESET BUTTON (This was missing in the JS render)
+        // 2. ADD INSTALL TIP & RESET BUTTON
         container.innerHTML += `
-            <div style="text-align: center; margin-top: 30px; padding-bottom: 20px; opacity: 0.6;">
-                <button onclick="app.resetData()" style="background:none; border:none; color:var(--red-text); font-size:0.85rem; cursor:pointer;">
+            <div style="text-align: center; margin-top: 25px; padding: 0 20px 20px;">
+                
+                <div style="background: var(--bg-card); border: 1px dashed var(--border); padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 0.85rem; color: var(--text-muted);">
+                    <i class="bi bi-phone" style="font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; display: block;"></i>
+                    <strong>Install App:</strong> Tap <i class="bi bi-three-dots-vertical"></i> or <i class="bi bi-share"></i><br> then select <b>"Add to Home Screen"</b>
+                </div>
+
+                <button onclick="app.resetData()" style="background:none; border:none; color:var(--red-text); font-size:0.85rem; cursor:pointer; opacity: 0.8;">
                     <i class="bi bi-trash"></i> Reset All Data
                 </button>
-                <div class="scroll-credit">
+                
+                <div class="scroll-credit" style="margin-top: 15px;">
                     Made with ❤️ by <b>Vaibhav</b>
                 </div>
             </div>
