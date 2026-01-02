@@ -1,11 +1,10 @@
 // --- PWA INSTALL LOGIC ---
-let deferredPrompt; // Saves the install event
+let deferredPrompt; 
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
-  deferredPrompt = e; // Save it for later
-  // If the app is already running, we can update the UI now
+  deferredPrompt = e;
   if(app && document.getElementById('subjectList')) {
-      app.renderSubjects(); // Re-render to show the button
+      app.renderSubjects(); 
   }
 });
 
@@ -54,12 +53,10 @@ const RGIT_DATA = {
             {t:"10:30", e:"11:30", c:"IKS", type:"LEC", r:"C-22"}, 
             {t:"11:30", e:"12:30", c:"PP", type:"LEC", r:"C-22"},
             {t:"12:30", e:"13:15", type:"BREAK", name:"RECESS"},
-            // Workshop is in Workshop area, DS F3 in B-11
             {t:"13:15", e:"15:15", map:{"F1":"WS-II","F2":"WS-II","F3":"DS"}, rMap:{"F1":"Workshop","F2":"Workshop","F3":"B-11"}, type:"PRAC"}, 
             {t:"15:15", e:"16:15", c:"AM-II", type:"TUT", r:"B-11"}
         ],
         2: [ // TUE
-            // Rooms not fully clear for DS/EC in image, assumed Lab/Class. WS is Workshop.
             {t:"08:30", e:"09:30", map:{"F1":"DS","F2":"EC","F3":"WS-II"}, rMap:{"F3":"Workshop"}, type:"PRAC"},
             {t:"09:30", e:"10:30", map:{"F1":"DS","F2":"EP","F3":"WS-II"}, rMap:{"F3":"Workshop"}, type:"PRAC"},
             {t:"10:30", e:"11:30", c:"DS", type:"LEC", r:"B-22"}, 
@@ -91,7 +88,6 @@ const RGIT_DATA = {
             {t:"11:30", e:"12:30", c:"EP", type:"LEC", r:"B-23"},
             {t:"12:30", e:"13:15", type:"BREAK", name:"RECESS"},
             {t:"13:15", e:"14:15", c:"EG", type:"LEC", r:"B-23"}, 
-            // F3 is in C-23, others B-23
             {t:"14:15", e:"16:15", c:"EG", rMap:{"F1":"B-23","F2":"B-23","F3":"C-23"}, type:"PRAC"}
         ]
     }
@@ -102,204 +98,123 @@ const app = {
     selectedDate: new Date(), 
     attendanceLog: {}, 
     globalStats: {},
+    extraClasses: {}, 
+    currentExtraType: 'LEC',
 
     init: function() {
-        // Check Local (Remembered) OR Session (Temporary)
         const u = localStorage.getItem('rgit_user') || sessionStorage.getItem('rgit_user');
         
         if(u) {
             this.user = JSON.parse(u);
-            // Load stats from LocalStorage regardless of login type (stats should persist)
             this.attendanceLog = JSON.parse(localStorage.getItem(`log_${this.user.id}`) || '{}');
             this.globalStats = JSON.parse(localStorage.getItem(`stats_${this.user.id}`) || '{}');
+            this.extraClasses = JSON.parse(localStorage.getItem(`extra_${this.user.id}`) || '{}');
             this.showMain();
         } else {
             document.getElementById('loginView').classList.remove('hidden');
-            // Re-attach focus listener if needed (from previous step)
             this.attachFocusListeners(); 
         }
     },
 
-    // 1. HAPTIC FEEDBACK
     vibrate: function() {
         if(navigator.vibrate) navigator.vibrate(50);
     },
     
-        // --- UPDATED HUMOR GENERATOR (With Start Status) ---
+    // --- HUMOR GENERATOR ---
     getStatus: function(pct, totalT) {
-        // Helper to pick random message
         const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-        // SCENARIO 0: NO DATA ENTERED YET (Fresh Start)
         if (totalT === 0) {
             return {
-                t: pick([
-                    "Shubh Aarambh! 🥥",          // Auspicious start
-                    "Chala suru karuya! 🚀",      // Marathi: Let's start
-                    "Abhi toh party shuru hui hai 🎉", 
-                    "Ganpati Bappa Morya! 🙏",    // Classic Mumbai Start
-                    "Account kholo bidu 🖊️",      // Open account
-                    "Zero se Hero banna hai 🦸"
-                ]),
-                c: "#8b949e" // Grey text for neutral start
+                t: pick(["Shubh Aarambh! 🥥", "Chala suru karuya! 🚀", "Abhi toh party shuru hui hai 🎉", "Ganpati Bappa Morya! 🙏", "Account kholo bidu 🖊️", "Zero se Hero banna hai 🦸"]),
+                c: "#8b949e" 
             };
         }
 
-        // SCENARIO: ATTENDANCE LOGIC
         if (pct >= 90) return { t: pick(["Topper hai kya? 🤓", "Bas kar bhai, rulayega kya? 😭", "Chatur Ramalingam 2.0 📚", "Principal banega kya? 🏛️", "Abhyas karun karun maratos ka? 😵"]), c: "#3fb950" };
         if (pct >= 75) return { t: pick(["Life set hai bidu! 😎", "Aal iz well 🔔", "Tera bhai safe hai 🤝", "Vishay hard aahe pan card clear aahe 🔥", "Hawa aane de 💨"]), c: "#3fb950" };
         if (pct >= 65) return { t: pick(["Cut-to-cut game chalu hai 🏏", "Sambhal jaa bidu! ✋", "Thoda adjust karun gya saheb 🙏", "Kaathavar pass... 🧱", "Calculated risk le raha hai? 🧮"]), c: "#d29922" };
         if (pct >= 50) return { t: pick(["Dhak dhak horela hai 💓", "Khatron ke Khiladi 💀", "Defaulter list is calling 📞", "Lagli... Watt lagli 📉", "Moye Moye moment 🎶"]), c: "#d29922" };
         if (pct >= 30) return { t: pick(["Ghar pe baat karlo... 🏠", "HOD cabin ka rasta dekh le 🚪", "Aai baba na kalvava lagel 🥖", "Bag bharo, nikal lo 🎒", "Ab toh Bhagwan bharose 🙏"]), c: "#da3633" };
         
-        // SCENARIO: 0% ATTENDANCE (But classes have happened)
         return { t: pick(["College rasta bhul gaya? 🗺️", "Agla saal wapas milte hai ✌️", "Tata Bye Bye Khatam 👋", "Tu tourist hai ya student? 🏖️", "Deva... uthav re mala 😩"]), c: "#da3633" };
     },
 
-    // 2. CALCULATE OVERALL STATS
-        updateOverall: function() {
-        let totalP = 0;
-        let totalT = 0;
-        
-        Object.values(this.globalStats).forEach(s => {
-            totalP += s.p;
-            totalT += s.t;
-        });
-
+    updateOverall: function() {
+        let totalP = 0, totalT = 0;
+        Object.values(this.globalStats).forEach(s => { totalP += s.p; totalT += s.t; });
         const pct = totalT === 0 ? 0 : Math.round((totalP/totalT)*100);
-        
-        // --- CHANGE: Pass totalT to the function ---
         const status = this.getStatus(pct, totalT);
 
         const pctEl = document.getElementById('overallPct');
         const textEl = document.getElementById('safeText');
-        
         if(pctEl) pctEl.innerText = `${pct}%`;
-        
-        if(textEl) {
-            textEl.innerText = status.t;
-            // Optional: Make the text color match the status color
-            // textEl.style.color = status.c; 
-        }
+        if(textEl) textEl.innerText = status.t;
     },
 
-    // 3. WHATSAPP SHARE
-            shareStats: function() {
+    shareStats: function() {
         this.vibrate();
         const btn = document.querySelector('#statsCard button');
         const originalIcon = btn ? btn.innerHTML : '';
         if(btn) btn.innerHTML = '<i class="bi bi-hourglass-split"></i>'; 
 
-        // 1. Calculate Data
         let totalP = 0, totalT = 0;
         Object.values(this.globalStats).forEach(s => { totalP += s.p; totalT += s.t; });
         const pct = totalT === 0 ? 0 : Math.round((totalP/totalT)*100);
-        
-        // --- CHANGE: Pass totalT here too ---
         const status = this.getStatus(pct, totalT);
         
-        const statusText = status.t;
-        const mainColor = status.c;
-
-        // ... (Rest of the canvas drawing code remains exactly the same) ...
-        // ...
-        // ...
-        
-        // 2. Create Canvas (Copy the rest from previous step)
         const canvas = document.createElement('canvas');
-        const size = 1080; 
-        canvas.width = size;
-        canvas.height = size;
+        const size = 1080; canvas.width = size; canvas.height = size;
         const ctx = canvas.getContext('2d');
 
-        // ... DRAWING CODE ...
-        // A. Background
+        // Draw
         const grd = ctx.createLinearGradient(0, 0, 0, size);
-        grd.addColorStop(0, '#161b22'); 
-        grd.addColorStop(1, '#0d1117'); 
-        ctx.fillStyle = grd;
-        ctx.fillRect(0, 0, size, size);
+        grd.addColorStop(0, '#161b22'); grd.addColorStop(1, '#0d1117'); 
+        ctx.fillStyle = grd; ctx.fillRect(0, 0, size, size);
 
-        // B. Header Text
         ctx.textAlign = "center";
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 60px Inter, sans-serif";
+        ctx.fillStyle = "#ffffff"; ctx.font = "bold 60px Inter, sans-serif";
         ctx.fillText("ATTENDANCE CHECK", size/2, 150);
 
-        ctx.fillStyle = "#f0f6fc"; 
-        ctx.font = "600 50px Inter, sans-serif"; 
-        const nameText = `${this.user.n} • ${this.user.id}`;
-        ctx.fillText(nameText, size/2, 230);
+        ctx.fillStyle = "#f0f6fc"; ctx.font = "600 50px Inter, sans-serif"; 
+        ctx.fillText(`${this.user.n} • ${this.user.id}`, size/2, 230);
 
-        ctx.fillStyle = "#8b949e";
-        ctx.font = "500 35px Inter, sans-serif";
+        ctx.fillStyle = "#8b949e"; ctx.font = "500 35px Inter, sans-serif";
         ctx.fillText("Computer Engineering • Div F", size/2, 290);
 
-        // C. Progress Ring
-        const centerX = size/2;
-        const centerY = size/2 + 50; 
-        const radius = 250;
-        const lineWidth = 40;
+        const centerX = size/2, centerY = size/2 + 50, radius = 250;
+        ctx.beginPath(); ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#21262d"; ctx.lineWidth = 40; ctx.lineCap = 'round'; ctx.stroke();
 
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = "#21262d";
-        ctx.lineWidth = lineWidth;
-        ctx.lineCap = 'round';
-        ctx.stroke();
+        const endAngle = ((pct / 100) * 2 * Math.PI) - 0.5 * Math.PI;
+        ctx.beginPath(); ctx.arc(centerX, centerY, radius, -0.5 * Math.PI, endAngle);
+        ctx.strokeStyle = status.c; ctx.lineWidth = 40; ctx.lineCap = 'round';
+        ctx.shadowBlur = 30; ctx.shadowColor = status.c; ctx.stroke(); ctx.shadowBlur = 0; 
 
-        const startAngle = -0.5 * Math.PI; 
-        const endAngle = ((pct / 100) * 2 * Math.PI) + startAngle;
-        
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-        ctx.strokeStyle = mainColor;
-        ctx.lineWidth = lineWidth;
-        ctx.lineCap = 'round';
-        ctx.shadowBlur = 30;
-        ctx.shadowColor = mainColor;
-        ctx.stroke();
-        ctx.shadowBlur = 0; 
-
-        // D. Center Stats
-        ctx.fillStyle = mainColor;
-        ctx.font = "bold 180px Inter, sans-serif";
+        ctx.fillStyle = status.c; ctx.font = "bold 180px Inter, sans-serif";
         ctx.fillText(`${pct}%`, centerX, centerY + 60);
 
-        // E. Status Text
-        ctx.fillStyle = "#f0f6fc";
-        ctx.font = "bold 50px Inter, sans-serif";
-        ctx.fillText(statusText, centerX, 920);
+        ctx.fillStyle = "#f0f6fc"; ctx.font = "bold 50px Inter, sans-serif";
+        ctx.fillText(status.t, centerX, 920);
 
-        // F. Footer
-        ctx.fillStyle = "#30363d";
-        ctx.fillRect(100, 960, 880, 2); 
-
-        ctx.fillStyle = "#8b949e";
-        ctx.font = "500 35px Inter, sans-serif";
+        ctx.fillStyle = "#30363d"; ctx.fillRect(100, 960, 880, 2); 
+        ctx.fillStyle = "#8b949e"; ctx.font = "500 35px Inter, sans-serif";
         ctx.fillText("RGIT Tracker", centerX, 1010);
-        
-        ctx.font = "600 35px Inter, sans-serif";
-        ctx.fillStyle = "#58a6ff"; 
+        ctx.font = "600 35px Inter, sans-serif"; ctx.fillStyle = "#58a6ff"; 
         ctx.fillText("Designed by Vaibhav", centerX, 1055);
 
-        // Sharing Logic
         canvas.toBlob(async (blob) => {
             const file = new File([blob], "attendance_status.png", { type: "image/png" });
             if (navigator.share) {
-                try { await navigator.share({ files: [file], title: 'My Attendance' }); } 
-                catch (err) { console.log('Share closed'); }
+                try { await navigator.share({ files: [file], title: 'My Attendance' }); } catch (e) {}
             } else {
-                const link = document.createElement('a');
-                link.download = 'attendance.png';
-                link.href = canvas.toDataURL();
-                link.click();
+                const link = document.createElement('a'); link.download = 'attendance.png';
+                link.href = canvas.toDataURL(); link.click();
             }
             if(btn) btn.innerHTML = originalIcon; 
         }, 'image/png');
     },
 
-    // 4. RESET DATA
     resetData: function() {
         if(confirm('⚠️ Are you sure? This will delete ALL your attendance data permanently.')) {
             localStorage.removeItem(`log_${this.user.id}`);
@@ -311,20 +226,11 @@ const app = {
     login: function() {
         const r = document.getElementById('rollInput').value;
         const student = RGIT_DATA.students[r];
-        
         if(student) {
             this.user = { id:r, ...student };
             const remember = document.getElementById('rememberMe').checked;
-
-            if (remember) {
-                // Save permanently
-                localStorage.setItem('rgit_user', JSON.stringify(this.user));
-            } else {
-                // Save only for this session
-                sessionStorage.setItem('rgit_user', JSON.stringify(this.user));
-                // Clear any old permanent data just in case
-                localStorage.removeItem('rgit_user'); 
-            }
+            if (remember) localStorage.setItem('rgit_user', JSON.stringify(this.user));
+            else sessionStorage.setItem('rgit_user', JSON.stringify(this.user));
             
             this.init();
         } else {
@@ -340,30 +246,33 @@ const app = {
         }
     },
     
-    // Helper for the keyboard fix (Add this if you haven't already)
     attachFocusListeners: function() {
         const inputField = document.getElementById('rollInput');
         const loginView = document.getElementById('loginView');
         if (inputField && loginView) {
             inputField.addEventListener('focus', () => loginView.classList.add('typing-mode'));
-            inputField.addEventListener('blur', () => {
-                setTimeout(() => loginView.classList.remove('typing-mode'), 200);
-            });
+            inputField.addEventListener('blur', () => setTimeout(() => loginView.classList.remove('typing-mode'), 200));
         }
     },
 
     showMain: function() {
         document.getElementById('loginView').classList.add('hidden');
         document.getElementById('mainView').classList.remove('hidden');
+        
         const firstName = this.user.n.split(" ")[1] || this.user.n.split(" ")[0];
         document.getElementById('userName').innerText = firstName;
         document.getElementById('userBatch').innerText = this.user.b;
-        this.renderDateStrip();
+        
         this.updateOverall();
+        this.switchTab('dashboard'); 
+        if(document.getElementById('fabBtn')) {
+             document.getElementById('fabBtn').style.display = 'flex';
+        }
+        this.renderDateStrip();
         this.loadDay(this.selectedDate);
     },
 
-        switchTab: function(tabName) {
+    switchTab: function(tabName) {
         document.getElementById('navDash').classList.toggle('active', tabName === 'dashboard');
         document.getElementById('navSub').classList.toggle('active', tabName === 'subjects');
 
@@ -373,11 +282,8 @@ const app = {
             document.getElementById('subjectList').classList.add('hidden');
             document.getElementById('dateStrip').style.display = 'flex';
             
-            // --- UPDATED CODE HERE ---
             const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
             document.getElementById('pageTitle').innerText = months[this.selectedDate.getMonth()];
-            // -------------------------
-
         } else {
             document.getElementById('timelineList').classList.add('hidden');
             document.getElementById('statsCard').classList.add('hidden');
@@ -386,19 +292,19 @@ const app = {
             document.getElementById('pageTitle').innerText = "Analysis";
             this.renderSubjects();
         }
+        
+        const fab = document.getElementById('fabBtn');
+        if(fab) fab.style.display = tabName === 'dashboard' ? 'flex' : 'none';
     },
 
-        renderDateStrip: function() {
+    renderDateStrip: function() {
         const strip = document.getElementById('dateStrip');
         strip.innerHTML = '';
         const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
         
-        // --- NEW CODE START ---
-        // Update the Page Title to the current Month
         if (document.getElementById('navDash').classList.contains('active')) {
             document.getElementById('pageTitle').innerText = months[this.selectedDate.getMonth()];
         }
-        // --- NEW CODE END ---
 
         for(let i=-3; i<=3; i++) {
             const d = new Date(this.selectedDate);
@@ -418,20 +324,24 @@ const app = {
         const [h, m] = time24.split(':');
         let hour = parseInt(h);
         const ampm = hour >= 12 ? 'PM' : 'AM';
-        hour = hour % 12;
-        hour = hour ? hour : 12; 
+        hour = hour % 12 || 12; 
         return `${hour}:${m} ${ampm}`;
     },
 
-                loadDay: function(date) {
-        const container = document.getElementById('timelineList');
+    loadDay: function(date) {
+        const container = document.getElementById('timelineList'); // Fixed typo here
         container.innerHTML = '';
+        
         const dayIdx = date.getDay(); 
         const dateKey = date.toISOString().split('T')[0];
-        const todaysClasses = RGIT_DATA.schedule[dayIdx];
+        
+        let todaysClasses = RGIT_DATA.schedule[dayIdx] ? [...RGIT_DATA.schedule[dayIdx]] : [];
+        if (this.extraClasses[dateKey]) {
+            todaysClasses = [...todaysClasses, ...this.extraClasses[dateKey]];
+        }
+        todaysClasses.sort((a, b) => (a.t > b.t) ? 1 : -1);
 
-        // --- SCENARIO 1: NO CLASSES (e.g. Sunday) ---
-        if(!todaysClasses) {
+        if(!todaysClasses || todaysClasses.length === 0) {
             container.innerHTML = `
             <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:300px; color:var(--text-muted);">
                 <i class="bi bi-cup-hot" style="font-size: 3rem; margin-bottom: 15px; opacity:0.5;"></i>
@@ -444,37 +354,22 @@ const app = {
             return;
         }
 
-        // --- SCENARIO 2: CLASSES EXIST ---
         todaysClasses.forEach(slot => {
             if(slot.type === 'BREAK') {
                 container.innerHTML += `
                 <div class="timeline-row">
-                    <div class="time-col">
-                        <div>${this.formatTime(slot.t)}</div>
-                        <div class="end-time">${this.formatTime(slot.e)}</div>
-                    </div>
-                    <div class="line-col">
-                        <div class="dot" style="background:#8b949e"></div>
-                        <div class="line"></div>
-                    </div>
-                    <div class="card-col">
-                        <div class="class-card recess-card">
-                            <div class="recess-title">☕ Recess</div>
-                        </div>
-                    </div>
+                    <div class="time-col"><div>${this.formatTime(slot.t)}</div><div class="end-time">${this.formatTime(slot.e)}</div></div>
+                    <div class="line-col"><div class="dot" style="background:#8b949e"></div><div class="line"></div></div>
+                    <div class="card-col"><div class="class-card recess-card"><div class="recess-title">☕ Recess</div></div></div>
                 </div>`;
                 return;
             }
 
-            // Determine Subject Code
             let code = slot.c;
             if(slot.map) code = slot.map[this.user.b];
             
-            // Determine Room Number
             let room = slot.r || ""; 
             if(slot.rMap) room = slot.rMap[this.user.b];
-            
-            // Create Room HTML
             const roomHtml = room ? `<div class="room-loc"><i class="bi bi-geo-alt-fill"></i> ${room}</div>` : '';
 
             const uniqueKey = `${code}_${slot.type}`;
@@ -491,25 +386,14 @@ const app = {
 
             container.innerHTML += `
             <div class="timeline-row">
-                <div class="time-col">
-                    <div>${this.formatTime(slot.t)}</div>
-                    <div class="end-time">${this.formatTime(slot.e)}</div>
-                    ${roomHtml} 
-                </div>
-                <div class="line-col">
-                    <div class="dot ${this.isNow(slot.t) ? 'active' : ''}"></div>
-                    <div class="line"></div>
-                </div>
+                <div class="time-col"><div>${this.formatTime(slot.t)}</div><div class="end-time">${this.formatTime(slot.e)}</div>${roomHtml}</div>
+                <div class="line-col"><div class="dot ${this.isNow(slot.t) ? 'active' : ''}"></div><div class="line"></div></div>
                 <div class="card-col">
                     <div class="class-card ${this.isNow(slot.t) ? 'now-glow' : ''}">
                         <div class="card-header">
                             <div class="subject-info">
-                                <div class="subject-row">
-                                    <span class="code">${code}</span>
-                                    <span class="tag ${slot.type}">${slot.type}</span>
-                                </div>
-                                <span class="name">${meta.name}</span>
-                                <span class="prof">${meta.prof}</span>
+                                <div class="subject-row"><span class="code">${code}</span><span class="tag ${slot.type}">${slot.type}</span></div>
+                                <span class="name">${meta.name}</span><span class="prof">${meta.prof}</span>
                             </div>
                             <div class="ring-container">
                                 <svg class="ring-svg"><circle cx="21" cy="21" r="18" class="ring-bg"></circle>
@@ -527,22 +411,17 @@ const app = {
             </div>`;
         });
 
-        // --- ADDED: WATERMARK AT BOTTOM OF LIST ---
         container.innerHTML += `
             <div style="text-align:center; margin-top: 25px;">
                 <div style="font-size:0.7rem; color:var(--text-muted); opacity:0.6; margin-bottom: 6px;">
                     <i class="bi bi-info-circle"></i> Tip: Go to <b>Subjects</b> tab to reset data
                 </div>
-            <div class="scroll-credit" style="margin-top: 20px;">
-                Made with ❤️ by <b>Vaibhav</b>
-            </div>`;
+            <div class="scroll-credit" style="margin-top: 20px;">Made with ❤️ by <b>Vaibhav</b></div>`;
     },
 
     toggle: function(dateKey, uniqueKey, newStatus) {
         this.vibrate(); 
-
         if(!this.attendanceLog[dateKey]) this.attendanceLog[dateKey] = {};
-        
         const currentStatus = this.attendanceLog[dateKey][uniqueKey];
         if(!this.globalStats[uniqueKey]) this.globalStats[uniqueKey] = {p:0, t:0};
         let stats = this.globalStats[uniqueKey];
@@ -552,7 +431,6 @@ const app = {
             if(currentStatus === 'A') { stats.t--; }
             delete this.attendanceLog[dateKey][uniqueKey];
         }
-
         if(currentStatus !== newStatus) {
             if(newStatus === 'P') { stats.p++; stats.t++; }
             if(newStatus === 'A') { stats.t++; }
@@ -566,12 +444,11 @@ const app = {
         this.loadDay(this.selectedDate);
     },
 
-                renderSubjects: function() {
+    renderSubjects: function() {
         const container = document.getElementById('subjectList');
         container.innerHTML = ''; 
         const subjects = Object.keys(RGIT_DATA.subjects);
         
-        // 1. Generate Subject Cards (Same as before)
         subjects.forEach(code => {
             const subjectData = RGIT_DATA.subjects[code];
             const types = subjectData.types || ['LEC'];
@@ -610,29 +487,14 @@ const app = {
                     <div class="stat-details">${stats.p}/${stats.t} Attended<div class="prediction-box ${predClass}">${predMsg}</div></div>
                 `;
             });
-
             container.innerHTML += `<div class="sub-card"><div class="sub-title">${subjectData.name}</div>${rowsHtml}</div>`;
         });
 
-        // 2. SMART INSTALL SECTION
         let installHtml = '';
-        
-        // Scenario A: Android/Chrome (Can install automatically)
         if (window.deferredPrompt) {
-            installHtml = `
-                <button onclick="app.triggerInstall()" style="background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-left: auto; margin-right: auto;">
-                    <i class="bi bi-download"></i> Install App
-                </button>
-            `;
-        } 
-        // Scenario B: iPhone/iPad (Must use text instructions)
-        else {
-            installHtml = `
-                <div style="background: var(--bg-card); border: 1px dashed var(--border); padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 0.85rem; color: var(--text-muted);">
-                    <i class="bi bi-phone" style="font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; display: block;"></i>
-                    <strong>Install App:</strong> Tap <i class="bi bi-three-dots-vertical"></i> or <i class="bi bi-share"></i> then select <br><b>"Add to Home Screen"</b>
-                </div>
-            `;
+            installHtml = `<button onclick="app.triggerInstall()" style="background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-left: auto; margin-right: auto;"><i class="bi bi-download"></i> Install App</button>`;
+        } else {
+            installHtml = `<div style="background: var(--bg-card); border: 1px dashed var(--border); padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 0.85rem; color: var(--text-muted);"><i class="bi bi-phone" style="font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; display: block;"></i><strong>Install App:</strong> Tap <i class="bi bi-three-dots-vertical"></i> or <i class="bi bi-share"></i> then select <br><b>"Add to Home Screen"</b></div>`;
         }
 
         container.innerHTML += `
@@ -644,18 +506,15 @@ const app = {
                 <div class="scroll-credit" style="margin-top: 15px;">Made with ❤️ by <b>Vaibhav</b></div>
             </div>
         `;
-
         setTimeout(() => { document.querySelectorAll('.progress-fill').forEach(el => { el.style.width = el.getAttribute('data-width'); }); }, 50);
     },
 
-    // 3. Add the Trigger Function
     triggerInstall: async function() {
         if (window.deferredPrompt) {
-            window.deferredPrompt.prompt(); // Show the native prompt
-            const { outcome } = await window.deferredPrompt.userChoice;
-            console.log(`User response: ${outcome}`);
-            window.deferredPrompt = null; // Used once, discard it
-            this.renderSubjects(); // Hide the button
+            window.deferredPrompt.prompt(); 
+            await window.deferredPrompt.userChoice;
+            window.deferredPrompt = null; 
+            this.renderSubjects();
         }
     },
 
@@ -663,27 +522,85 @@ const app = {
         const h = new Date().getHours();
         const slotH = parseInt(t.split(':')[0]);
         return h === slotH;
+    },
+
+    // --- EXTRA CLASS FUNCTIONS ---
+    openAddModal: function() {
+        const modal = document.getElementById('addModal');
+        const select = document.getElementById('extraSub');
+        select.innerHTML = '';
+        
+        // 1. Populate Subjects
+        Object.keys(RGIT_DATA.subjects).forEach(code => {
+            const sub = RGIT_DATA.subjects[code];
+            const opt = document.createElement('option');
+            opt.value = code;
+            opt.innerText = `${code} - ${sub.name}`;
+            select.appendChild(opt);
+        });
+
+        // 2. Add listener to update buttons when subject changes
+        select.onchange = () => {
+            this.renderModalTypes(select.value);
+        };
+
+        // 3. Initialize for the first subject in the list
+        if(select.options.length > 0) {
+            this.renderModalTypes(select.value);
+        }
+        
+        modal.classList.remove('hidden');
+    },
+
+    // NEW: Generates the buttons dynamically (LEC/PRAC/TUT)
+    renderModalTypes: function(code) {
+        const types = RGIT_DATA.subjects[code].types; // e.g. ["LEC", "TUT"]
+        const container = document.querySelector('.type-selector');
+        container.innerHTML = ''; // Clear old buttons
+
+        types.forEach((type, index) => {
+            const btn = document.createElement('div');
+            // Make the first option active by default
+            btn.className = `type-opt ${index === 0 ? 'active' : ''}`;
+            btn.innerText = type;
+            
+            // Add click event
+            btn.onclick = () => {
+                container.querySelectorAll('.type-opt').forEach(el => el.classList.remove('active'));
+                btn.classList.add('active');
+                this.currentExtraType = type;
+            };
+            
+            container.appendChild(btn);
+        });
+
+        // Set default type to the first one available
+        this.currentExtraType = types[0];
+    },
+
+    // (The setExtraType function is no longer needed as it's handled inside renderModalTypes)
+
+    saveExtraClass: function() {
+        const code = document.getElementById('extraSub').value;
+        const time = document.getElementById('extraTime').value;
+        const dateKey = this.selectedDate.toISOString().split('T')[0];
+        
+        // Use the currentExtraType which is now guaranteed to be valid
+        const newClass = { t: time, e: time, c: code, type: this.currentExtraType, isExtra: true };
+
+        if (!this.extraClasses[dateKey]) this.extraClasses[dateKey] = [];
+        this.extraClasses[dateKey].push(newClass);
+        localStorage.setItem(`extra_${this.user.id}`, JSON.stringify(this.extraClasses));
+        
+        document.getElementById('addModal').classList.add('hidden');
+        this.loadDay(this.selectedDate);
     }
 };
 
-// FIX: Handle Input Focus for Mobile
-const inputField = document.getElementById('rollInput');
-const loginView = document.getElementById('loginView');
-
-if (inputField) {
-    // When user taps/focuses the input
-    inputField.addEventListener('focus', function() {
-        // Add the class to move UI to top
-        loginView.classList.add('typing-mode');
-    });
-
-    // When user clicks outside or closes keyboard
-    inputField.addEventListener('blur', function() {
-        // Delay slightly to allow clicks on buttons to register
-        setTimeout(() => {
-            loginView.classList.remove('typing-mode');
-        }, 200);
-    });
+// Start the App
+const inp = document.getElementById('rollInput');
+if(inp) {
+    inp.addEventListener('focus', () => document.getElementById('loginView').classList.add('typing-mode'));
+    inp.addEventListener('blur', () => setTimeout(() => document.getElementById('loginView').classList.remove('typing-mode'), 200));
 }
-
 app.init();

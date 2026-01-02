@@ -103,6 +103,34 @@
             .catch((err) => console.log('SW Registration Failed', err));
     }
 </script>
+    <div id="addModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>Add Extra Class</h3>
+            
+            <label>Select Subject</label>
+            <select id="extraSub">
+                </select>
+
+            <label>Type</label>
+            <div class="type-selector">
+                <div class="type-opt active" onclick="app.setExtraType(this, 'LEC')">LEC</div>
+                <div class="type-opt" onclick="app.setExtraType(this, 'PRAC')">PRAC</div>
+                <div class="type-opt" onclick="app.setExtraType(this, 'TUT')">TUT</div>
+            </div>
+
+            <label>Time (Optional)</label>
+            <input type="time" id="extraTime" value="09:00" style="color-scheme: dark;">
+
+            <div class="modal-actions">
+                <button onclick="document.getElementById('addModal').classList.add('hidden')" class="btn-cancel">Cancel</button>
+                <button onclick="app.saveExtraClass()" class="btn-save">Add Class</button>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="app.openAddModal()" class="fab-btn" id="fabBtn">
+        <i class="bi bi-plus-lg"></i>
+    </button>
 </body>
 
 </html>
