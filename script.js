@@ -140,30 +140,127 @@ const app = {
     },
 
     // 3. WHATSAPP SHARE
-    shareStats: function() {
+        shareStats: function() {
         this.vibrate();
-        let text = `*My Attendance Update* 📊\n\n`;
+        const btn = document.querySelector('#statsCard button');
+        const originalIcon = btn ? btn.innerHTML : '';
+        if(btn) btn.innerHTML = '<i class="bi bi-hourglass-split"></i>'; // Loading icon
+
+        // 1. Calculate Data
         let totalP = 0, totalT = 0;
+        Object.values(this.globalStats).forEach(s => { totalP += s.p; totalT += s.t; });
+        const pct = totalT === 0 ? 0 : Math.round((totalP/totalT)*100);
+        
+        let statusText = "Defaulter Alert 💀";
+        let mainColor = "#da3633"; // Red
+        if(pct >= 60) { statusText = "Cut to cut... 😬"; mainColor = "#d29922"; } // Yellow
+        if(pct >= 75) { statusText = "You are safe! 🎉"; mainColor = "#3fb950"; } // Green
 
-        Object.keys(this.globalStats).forEach(key => {
-            const s = this.globalStats[key];
-            if(s.t > 0) {
-                const p = Math.round((s.p/s.t)*100);
-                const name = key.split('_')[0]; 
-                totalP += s.p; totalT += s.t;
-                const icon = p < 75 ? '⚠️' : '✅';
-                text += `${name}: ${p}% ${icon}\n`;
+        // 2. Create Canvas (High Resolution)
+        const canvas = document.createElement('canvas');
+        const size = 1080; 
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+
+        // --- DRAWING ---
+
+        // A. Background
+        const grd = ctx.createLinearGradient(0, 0, 0, size);
+        grd.addColorStop(0, '#161b22'); 
+        grd.addColorStop(1, '#0d1117'); 
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, size, size);
+
+        // B. Header Text (Adjusted positions)
+        ctx.textAlign = "center";
+        
+        // 1. Title
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 60px Inter, sans-serif";
+        ctx.fillText("ATTENDANCE CHECK", size/2, 150);
+
+        // 2. USER NAME & ROLL NO (New Added Line)
+        ctx.fillStyle = "#f0f6fc"; // Bright white-blue
+        ctx.font = "600 50px Inter, sans-serif"; 
+        // Using this.user.n (Name) and this.user.id (Roll)
+        const nameText = `${this.user.n} • ${this.user.id}`;
+        ctx.fillText(nameText, size/2, 230);
+
+        // 3. Subtitle
+        ctx.fillStyle = "#8b949e";
+        ctx.font = "500 35px Inter, sans-serif";
+        ctx.fillText("Computer Engineering • Div F", size/2, 290);
+
+        // C. Progress Ring (Moved down slightly to make room)
+        const centerX = size/2;
+        const centerY = size/2 + 50; // Shifted down by 50px
+        const radius = 250;
+        const lineWidth = 40;
+
+        // Background Ring
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#21262d";
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        // Percentage Ring
+        const startAngle = -0.5 * Math.PI; 
+        const endAngle = ((pct / 100) * 2 * Math.PI) + startAngle;
+        
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.strokeStyle = mainColor;
+        ctx.lineWidth = lineWidth;
+        ctx.lineCap = 'round';
+        ctx.shadowBlur = 30;
+        ctx.shadowColor = mainColor;
+        ctx.stroke();
+        ctx.shadowBlur = 0; 
+
+        // D. Center Stats
+        ctx.fillStyle = mainColor;
+        ctx.font = "bold 180px Inter, sans-serif";
+        ctx.fillText(`${pct}%`, centerX, centerY + 60);
+
+        // E. Status Text (Moved down)
+        ctx.fillStyle = "#f0f6fc";
+        ctx.font = "bold 50px Inter, sans-serif";
+        ctx.fillText(statusText, centerX, 920);
+
+        // F. Footer / Credits
+        ctx.fillStyle = "#30363d";
+        ctx.fillRect(100, 960, 880, 2); // Line
+
+        ctx.fillStyle = "#8b949e";
+        ctx.font = "500 35px Inter, sans-serif";
+        ctx.fillText("RGIT Tracker", centerX, 1010);
+        
+        ctx.font = "600 35px Inter, sans-serif";
+        ctx.fillStyle = "#58a6ff"; 
+        ctx.fillText("Designed by Vaibhav", centerX, 1055);
+
+        // --- SHARING ---
+        canvas.toBlob(async (blob) => {
+            const file = new File([blob], "attendance_status.png", { type: "image/png" });
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: 'My Attendance',
+                    });
+                } catch (err) { console.log('Share closed'); }
+            } else {
+                const link = document.createElement('a');
+                link.download = 'attendance.png';
+                link.href = canvas.toDataURL();
+                link.click();
             }
-        });
-
-        const overall = totalT === 0 ? 0 : Math.round((totalP/totalT)*100);
-        text += `\n*Overall: ${overall}%*`;
-
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Stats copied! Paste in WhatsApp.');
-        }).catch(err => {
-            console.error('Failed to copy', err);
-        });
+            if(btn) btn.innerHTML = originalIcon; 
+        }, 'image/png');
     },
 
     // 4. RESET DATA
