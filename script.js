@@ -493,6 +493,10 @@ const app = {
 
         // --- ADDED: WATERMARK AT BOTTOM OF LIST ---
         container.innerHTML += `
+            <div style="text-align:center; margin-top: 25px;">
+                <div style="font-size:0.7rem; color:var(--text-muted); opacity:0.6; margin-bottom: 6px;">
+                    <i class="bi bi-info-circle"></i> Tip: Go to <b>Subjects</b> tab to reset data
+                </div>
             <div class="scroll-credit" style="margin-top: 20px;">
                 Made with ❤️ by <b>Vaibhav</b>
             </div>`;
