@@ -38,47 +38,50 @@ const RGIT_DATA = {
 
     schedule: {
         1: [ // MON
-            {t:"08:30", e:"09:30", c:"EP", type:"LEC"}, 
-            {t:"09:30", e:"10:30", c:"EC", type:"LEC"},
-            {t:"10:30", e:"11:30", c:"IKS", type:"LEC"}, 
-            {t:"11:30", e:"12:30", c:"PP", type:"LEC"},
+            {t:"08:30", e:"09:30", c:"EP", type:"LEC", r:"C-22"}, 
+            {t:"09:30", e:"10:30", c:"EC", type:"LEC", r:"C-22"},
+            {t:"10:30", e:"11:30", c:"IKS", type:"LEC", r:"C-22"}, 
+            {t:"11:30", e:"12:30", c:"PP", type:"LEC", r:"C-22"},
             {t:"12:30", e:"13:15", type:"BREAK", name:"RECESS"},
-            {t:"13:15", e:"15:15", map:{"F1":"WS-II","F2":"WS-II","F3":"DS"}, type:"PRAC"}, 
-            {t:"15:15", e:"16:15", c:"AM-II", type:"TUT"}
+            // Workshop is in Workshop area, DS F3 in B-11
+            {t:"13:15", e:"15:15", map:{"F1":"WS-II","F2":"WS-II","F3":"DS"}, rMap:{"F1":"Workshop","F2":"Workshop","F3":"B-11"}, type:"PRAC"}, 
+            {t:"15:15", e:"16:15", c:"AM-II", type:"TUT", r:"B-11"}
         ],
         2: [ // TUE
-            {t:"08:30", e:"09:30", map:{"F1":"DS","F2":"EC","F3":"WS-II"}, type:"PRAC"},
-            {t:"09:30", e:"10:30", map:{"F1":"DS","F2":"EP","F3":"WS-II"}, type:"PRAC"},
-            {t:"10:30", e:"11:30", c:"DS", type:"LEC"}, 
-            {t:"11:30", e:"12:30", c:"PP", type:"LEC"},
+            // Rooms not fully clear for DS/EC in image, assumed Lab/Class. WS is Workshop.
+            {t:"08:30", e:"09:30", map:{"F1":"DS","F2":"EC","F3":"WS-II"}, rMap:{"F3":"Workshop"}, type:"PRAC"},
+            {t:"09:30", e:"10:30", map:{"F1":"DS","F2":"EP","F3":"WS-II"}, rMap:{"F3":"Workshop"}, type:"PRAC"},
+            {t:"10:30", e:"11:30", c:"DS", type:"LEC", r:"B-22"}, 
+            {t:"11:30", e:"12:30", c:"PP", type:"LEC", r:"B-22"},
             {t:"12:30", e:"13:15", type:"BREAK", name:"RECESS"},
-            {t:"13:15", e:"15:15", c:"SS&CS", type:"PRAC"}
+            {t:"13:15", e:"15:15", c:"SS&CS", type:"PRAC", r:"C-26"}
         ],
         3: [ // WED
             {t:"08:30", e:"09:30", map:{"F1":"EP","F2":"DS","F3":"EC"}, type:"PRAC"},
             {t:"09:30", e:"10:30", map:{"F1":"EC","F2":"DS","F3":"EP"}, type:"PRAC"},
-            {t:"10:30", e:"12:30", c:"IKS", type:"PRAC"}, 
+            {t:"10:30", e:"12:30", c:"IKS", type:"PRAC", r:"A-26"}, 
             {t:"12:30", e:"13:15", type:"BREAK", name:"RECESS"},
-            {t:"13:15", e:"14:15", c:"EG", type:"LEC"},
-            {t:"14:15", e:"15:15", c:"AM-II", type:"LEC"}, 
-            {t:"15:15", e:"16:15", c:"IKS", type:"LEC"} 
+            {t:"13:15", e:"14:15", c:"EG", type:"LEC", r:"C-22"},
+            {t:"14:15", e:"15:15", c:"AM-II", type:"LEC", r:"C-22"}, 
+            {t:"15:15", e:"16:15", c:"IKS", type:"LEC", r:"C-22"} 
         ],
         4: [ // THU
-            {t:"08:30", e:"09:30", c:"SS&CS", type:"LEC"}, 
-            {t:"09:30", e:"10:30", c:"EG", type:"LEC"},
-            {t:"10:30", e:"12:15", c:"PP", type:"PRAC"},
+            {t:"08:30", e:"09:30", c:"SS&CS", type:"LEC", r:"C-22"}, 
+            {t:"09:30", e:"10:30", c:"EG", type:"LEC", r:"C-22"},
+            {t:"10:30", e:"12:15", c:"PP", type:"PRAC", r:"B-11"},
             {t:"12:15", e:"13:15", type:"BREAK", name:"RECESS"},
-            {t:"13:15", e:"14:15", c:"DS", type:"LEC"}, 
-            {t:"14:15", e:"15:15", c:"AM-II", type:"LEC"}
+            {t:"13:15", e:"14:15", c:"DS", type:"LEC", r:"B-22"}, 
+            {t:"14:15", e:"15:15", c:"AM-II", type:"LEC", r:"B-22"}
         ],
         5: [ // FRI
-            {t:"08:30", e:"09:30", c:"EC", type:"LEC"}, 
-            {t:"09:30", e:"10:30", c:"SS&CS", type:"LEC"},
-            {t:"10:30", e:"11:30", c:"AM-II", type:"LEC"}, 
-            {t:"11:30", e:"12:30", c:"EP", type:"LEC"},
+            {t:"08:30", e:"09:30", c:"EC", type:"LEC", r:"B-23"}, 
+            {t:"09:30", e:"10:30", c:"SS&CS", type:"LEC", r:"B-23"},
+            {t:"10:30", e:"11:30", c:"AM-II", type:"LEC", r:"B-23"}, 
+            {t:"11:30", e:"12:30", c:"EP", type:"LEC", r:"B-23"},
             {t:"12:30", e:"13:15", type:"BREAK", name:"RECESS"},
-            {t:"13:15", e:"14:15", c:"EG", type:"LEC"}, 
-            {t:"14:15", e:"16:15", c:"EG", type:"PRAC"}
+            {t:"13:15", e:"14:15", c:"EG", type:"LEC", r:"B-23"}, 
+            // F3 is in C-23, others B-23
+            {t:"14:15", e:"16:15", c:"EG", rMap:{"F1":"B-23","F2":"B-23","F3":"C-23"}, type:"PRAC"}
         ]
     }
 };
@@ -275,14 +278,13 @@ const app = {
         return `${hour}:${m} ${ampm}`;
     },
 
-    loadDay: function(date) {
+            loadDay: function(date) {
         const container = document.getElementById('timelineList');
         container.innerHTML = '';
         const dayIdx = date.getDay(); 
         const dateKey = date.toISOString().split('T')[0];
         const todaysClasses = RGIT_DATA.schedule[dayIdx];
 
-        // BETTER EMPTY STATE
         if(!todaysClasses) {
             container.innerHTML = `
             <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:300px; color:var(--text-muted);">
@@ -314,9 +316,17 @@ const app = {
                 return;
             }
 
+            // 1. Determine Subject Code
             let code = slot.c;
             if(slot.map) code = slot.map[this.user.b];
             
+            // 2. Determine Room Number (New Logic)
+            let room = slot.r || ""; 
+            if(slot.rMap) room = slot.rMap[this.user.b];
+            
+            // Create the Room HTML snippet (only if room exists)
+            const roomHtml = room ? `<div class="room-loc"><i class="bi bi-geo-alt-fill"></i> ${room}</div>` : '';
+
             const uniqueKey = `${code}_${slot.type}`;
             const meta = RGIT_DATA.subjects[code] || {name: code, prof: ""};
             const dailyStatus = (this.attendanceLog[dateKey] && this.attendanceLog[dateKey][uniqueKey]) || null;
@@ -334,6 +344,7 @@ const app = {
                 <div class="time-col">
                     <div>${this.formatTime(slot.t)}</div>
                     <div class="end-time">${this.formatTime(slot.e)}</div>
+                    ${roomHtml} 
                 </div>
                 <div class="line-col">
                     <div class="dot ${this.isNow(slot.t) ? 'active' : ''}"></div>

@@ -254,8 +254,6 @@ body {
     .logo-emoji { display: none; }
 }
 
-/* Add to style.css */
-
 .remember-box {
     display: flex;
     justify-content: center;
@@ -347,4 +345,38 @@ body {
     font-size: 0.75rem; 
     color: var(--text-muted);
     opacity: 0.5;
+}
+
+.room-badge {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.room-badge i {
+    font-size: 0.7rem;
+    color: var(--accent); /* Blue pin */
+}
+
+.room-loc {
+    margin-top: 6px;
+    font-size: 0.7rem;
+    color: var(--accent); /* Uses your blue accent color */
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Aligns right with the time */
+    gap: 3px;
+    opacity: 0.9;
+}
+
+.room-loc i {
+    font-size: 0.65rem;
 }
