@@ -137,7 +137,7 @@ const app = {
                     "Shubh Aarambh! 🥥",          // Auspicious start
                     "Chala suru karuya! 🚀",      // Marathi: Let's start
                     "Abhi toh party shuru hui hai 🎉", 
-                    "Ganpati Bappa Morya! 🐘",    // Classic Mumbai Start
+                    "Ganpati Bappa Morya! 🙏",    // Classic Mumbai Start
                     "Account kholo bidu 🖊️",      // Open account
                     "Zero se Hero banna hai 🦸"
                 ]),
