@@ -16,6 +16,6 @@ A web-based attendance tracker for RGIT Computer Engineering (Div F) students.
 * **Subjects Management:**
     * Add, edit, and delete subjects.
     * View attendance details for each subject.
-* **Data Reset:** Option to clear all your tracked data.
+* **Data Reset:** Option to clear all your tracked data (At the bottom of the Subjects Tab).
 * **Share Stats:** Share your attendance statistics easily.
 * **Responsive Design:** Works seamlessly on various devices, from desktops to mobile phones.
