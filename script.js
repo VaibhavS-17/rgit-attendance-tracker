@@ -448,4 +448,24 @@ const app = {
     }
 };
 
+// FIX: Handle Input Focus for Mobile
+const inputField = document.getElementById('rollInput');
+const loginView = document.getElementById('loginView');
+
+if (inputField) {
+    // When user taps/focuses the input
+    inputField.addEventListener('focus', function() {
+        // Add the class to move UI to top
+        loginView.classList.add('typing-mode');
+    });
+
+    // When user clicks outside or closes keyboard
+    inputField.addEventListener('blur', function() {
+        // Delay slightly to allow clicks on buttons to register
+        setTimeout(() => {
+            loginView.classList.remove('typing-mode');
+        }, 200);
+    });
+}
+
 app.init();

@@ -43,8 +43,14 @@ body {
 
 /* --- LOGIN --- */
 .login-view {
-    height: 100vh; display: flex; align-items: center; justify-content: center;
-    background: radial-gradient(circle at top, #1c2533 0%, #050505 60%); padding: 24px;
+    min-height: 100dvh; /* Allows scrolling if content gets squeezed */
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    background: radial-gradient(circle at top, #1c2533 0%, #050505 60%); 
+    padding: 24px;
+    /* Important: reset any body padding interference */
+    margin-bottom: -90px; 
 }
 .login-container { width: 100%; max-width: 340px; text-align: center; }
 .logo-emoji { font-size: 3.5rem; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
@@ -223,4 +229,27 @@ body {
     0% { box-shadow: 0 0 0 0 rgba(47, 129, 247, 0.4); }
     70% { box-shadow: 0 0 0 6px rgba(47, 129, 247, 0); }
     100% { box-shadow: 0 0 0 0 rgba(47, 129, 247, 0); }
+}
+
+/* --- KEYBOARD & MOBILE FIXES --- */
+
+/* --- KEYBOARD FIX --- */
+/* We use a specific class triggered by JS so the input doesn't jump mid-tap */
+.login-view.typing-mode {
+    align-items: flex-start;
+    padding-top: 60px; /* Moves content to top */
+    overflow-y: auto;
+}
+
+.login-view.typing-mode .logo-emoji {
+    display: none; /* Hide logo while typing */
+}
+
+/* Keep this as a backup for very small screens */
+@media (max-height: 450px) {
+    .login-view {
+        align-items: flex-start;
+        padding-top: 40px;
+    }
+    .logo-emoji { display: none; }
 }
