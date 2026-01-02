@@ -210,3 +210,17 @@ body {
 }
 .nav-item i { font-size: 1.3rem; margin-bottom: 2px; }
 .nav-item.active { color: var(--accent); }
+
+/* Add to bottom of style.css */
+
+.now-glow {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 20px rgba(47, 129, 247, 0.25);
+    animation: pulse-glow 3s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+    0% { box-shadow: 0 0 0 0 rgba(47, 129, 247, 0.4); }
+    70% { box-shadow: 0 0 0 6px rgba(47, 129, 247, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(47, 129, 247, 0); }
+}

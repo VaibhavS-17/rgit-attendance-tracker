@@ -310,7 +310,7 @@ const app = {
                     <div class="line"></div>
                 </div>
                 <div class="card-col">
-                    <div class="class-card">
+                    <div class="class-card ${this.isNow(slot.t) ? 'now-glow' : ''}">
                         <div class="card-header">
                             <div class="subject-info">
                                 <div class="subject-row">
