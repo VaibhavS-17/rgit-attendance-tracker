@@ -384,7 +384,7 @@ body {
 /* --- FAB (Floating Action Button) --- */
 .fab-btn {
     position: fixed;
-    bottom: 85px; /* Above the bottom nav */
+    bottom: 85px; 
     right: 20px;
     width: 56px;
     height: 56px;
@@ -394,13 +394,11 @@ body {
     border-radius: 50%;
     box-shadow: 0 4px 15px rgba(47, 129, 247, 0.4);
     font-size: 1.5rem;
-    display: flex;
+    display: flex; /* Changed from none to flex for testing, script handles toggle */
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 95;
-    transition: transform 0.2s;
-    display: none;
 }
 .fab-btn:active { transform: scale(0.9); }
 
