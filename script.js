@@ -113,9 +113,40 @@ const app = {
     vibrate: function() {
         if(navigator.vibrate) navigator.vibrate(50);
     },
+    
+        // --- UPDATED HUMOR GENERATOR (With Start Status) ---
+    getStatus: function(pct, totalT) {
+        // Helper to pick random message
+        const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+        // SCENARIO 0: NO DATA ENTERED YET (Fresh Start)
+        if (totalT === 0) {
+            return {
+                t: pick([
+                    "Shubh Aarambh! 🥥",          // Auspicious start
+                    "Chala suru karuya! 🚀",      // Marathi: Let's start
+                    "Abhi toh party shuru hui hai 🎉", 
+                    "Ganpati Bappa Morya! 🐘",    // Classic Mumbai Start
+                    "Account kholo bidu 🖊️",      // Open account
+                    "Zero se Hero banna hai 🦸"
+                ]),
+                c: "#8b949e" // Grey text for neutral start
+            };
+        }
+
+        // SCENARIO: ATTENDANCE LOGIC
+        if (pct >= 90) return { t: pick(["Topper hai kya? 🤓", "Bas kar bhai, rulayega kya? 😭", "Chatur Ramalingam 2.0 📚", "Principal banega kya? 🏛️", "Abhyas karun karun maratos ka? 😵"]), c: "#3fb950" };
+        if (pct >= 75) return { t: pick(["Life set hai bidu! 😎", "Aal iz well 🔔", "Tera bhai safe hai 🤝", "Vishay hard aahe pan card clear aahe 🔥", "Hawa aane de 💨"]), c: "#3fb950" };
+        if (pct >= 65) return { t: pick(["Cut-to-cut game chalu hai 🏏", "Sambhal jaa bidu! ✋", "Thoda adjust karun gya saheb 🙏", "Kaathavar pass... 🧱", "Calculated risk le raha hai? 🧮"]), c: "#d29922" };
+        if (pct >= 50) return { t: pick(["Dhak dhak horela hai 💓", "Khatron ke Khiladi 💀", "Defaulter list is calling 📞", "Lagli... Watt lagli 📉", "Moye Moye moment 🎶"]), c: "#d29922" };
+        if (pct >= 30) return { t: pick(["Ghar pe baat karlo... 🏠", "HOD cabin ka rasta dekh le 🚪", "Aai baba na kalvava lagel 🥖", "Bag bharo, nikal lo 🎒", "Ab toh Bhagwan bharose 🙏"]), c: "#da3633" };
+        
+        // SCENARIO: 0% ATTENDANCE (But classes have happened)
+        return { t: pick(["College rasta bhul gaya? 🗺️", "Agla saal wapas milte hai ✌️", "Tata Bye Bye Khatam 👋", "Tu tourist hai ya student? 🏖️", "Deva... uthav re mala 😩"]), c: "#da3633" };
+    },
 
     // 2. CALCULATE OVERALL STATS
-    updateOverall: function() {
+        updateOverall: function() {
         let totalP = 0;
         let totalT = 0;
         
@@ -126,45 +157,51 @@ const app = {
 
         const pct = totalT === 0 ? 0 : Math.round((totalP/totalT)*100);
         
-        // Update Dashboard Card
+        // --- CHANGE: Pass totalT to the function ---
+        const status = this.getStatus(pct, totalT);
+
         const pctEl = document.getElementById('overallPct');
         const textEl = document.getElementById('safeText');
         
         if(pctEl) pctEl.innerText = `${pct}%`;
         
         if(textEl) {
-            if(pct >= 75) textEl.innerText = "You are safe! 🎉";
-            else if(pct >= 60) textEl.innerText = "Cut to cut... 😬";
-            else textEl.innerText = "Defaulter Alert 💀";
+            textEl.innerText = status.t;
+            // Optional: Make the text color match the status color
+            // textEl.style.color = status.c; 
         }
     },
 
     // 3. WHATSAPP SHARE
-        shareStats: function() {
+            shareStats: function() {
         this.vibrate();
         const btn = document.querySelector('#statsCard button');
         const originalIcon = btn ? btn.innerHTML : '';
-        if(btn) btn.innerHTML = '<i class="bi bi-hourglass-split"></i>'; // Loading icon
+        if(btn) btn.innerHTML = '<i class="bi bi-hourglass-split"></i>'; 
 
         // 1. Calculate Data
         let totalP = 0, totalT = 0;
         Object.values(this.globalStats).forEach(s => { totalP += s.p; totalT += s.t; });
         const pct = totalT === 0 ? 0 : Math.round((totalP/totalT)*100);
         
-        let statusText = "Defaulter Alert 💀";
-        let mainColor = "#da3633"; // Red
-        if(pct >= 60) { statusText = "Cut to cut... 😬"; mainColor = "#d29922"; } // Yellow
-        if(pct >= 75) { statusText = "You are safe! 🎉"; mainColor = "#3fb950"; } // Green
+        // --- CHANGE: Pass totalT here too ---
+        const status = this.getStatus(pct, totalT);
+        
+        const statusText = status.t;
+        const mainColor = status.c;
 
-        // 2. Create Canvas (High Resolution)
+        // ... (Rest of the canvas drawing code remains exactly the same) ...
+        // ...
+        // ...
+        
+        // 2. Create Canvas (Copy the rest from previous step)
         const canvas = document.createElement('canvas');
         const size = 1080; 
         canvas.width = size;
         canvas.height = size;
         const ctx = canvas.getContext('2d');
 
-        // --- DRAWING ---
-
+        // ... DRAWING CODE ...
         // A. Background
         const grd = ctx.createLinearGradient(0, 0, 0, size);
         grd.addColorStop(0, '#161b22'); 
@@ -172,33 +209,27 @@ const app = {
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, size, size);
 
-        // B. Header Text (Adjusted positions)
+        // B. Header Text
         ctx.textAlign = "center";
-        
-        // 1. Title
         ctx.fillStyle = "#ffffff";
         ctx.font = "bold 60px Inter, sans-serif";
         ctx.fillText("ATTENDANCE CHECK", size/2, 150);
 
-        // 2. USER NAME & ROLL NO (New Added Line)
-        ctx.fillStyle = "#f0f6fc"; // Bright white-blue
+        ctx.fillStyle = "#f0f6fc"; 
         ctx.font = "600 50px Inter, sans-serif"; 
-        // Using this.user.n (Name) and this.user.id (Roll)
         const nameText = `${this.user.n} • ${this.user.id}`;
         ctx.fillText(nameText, size/2, 230);
 
-        // 3. Subtitle
         ctx.fillStyle = "#8b949e";
         ctx.font = "500 35px Inter, sans-serif";
         ctx.fillText("Computer Engineering • Div F", size/2, 290);
 
-        // C. Progress Ring (Moved down slightly to make room)
+        // C. Progress Ring
         const centerX = size/2;
-        const centerY = size/2 + 50; // Shifted down by 50px
+        const centerY = size/2 + 50; 
         const radius = 250;
         const lineWidth = 40;
 
-        // Background Ring
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
         ctx.strokeStyle = "#21262d";
@@ -206,7 +237,6 @@ const app = {
         ctx.lineCap = 'round';
         ctx.stroke();
 
-        // Percentage Ring
         const startAngle = -0.5 * Math.PI; 
         const endAngle = ((pct / 100) * 2 * Math.PI) + startAngle;
         
@@ -225,14 +255,14 @@ const app = {
         ctx.font = "bold 180px Inter, sans-serif";
         ctx.fillText(`${pct}%`, centerX, centerY + 60);
 
-        // E. Status Text (Moved down)
+        // E. Status Text
         ctx.fillStyle = "#f0f6fc";
         ctx.font = "bold 50px Inter, sans-serif";
         ctx.fillText(statusText, centerX, 920);
 
-        // F. Footer / Credits
+        // F. Footer
         ctx.fillStyle = "#30363d";
-        ctx.fillRect(100, 960, 880, 2); // Line
+        ctx.fillRect(100, 960, 880, 2); 
 
         ctx.fillStyle = "#8b949e";
         ctx.font = "500 35px Inter, sans-serif";
@@ -242,17 +272,12 @@ const app = {
         ctx.fillStyle = "#58a6ff"; 
         ctx.fillText("Designed by Vaibhav", centerX, 1055);
 
-        // --- SHARING ---
+        // Sharing Logic
         canvas.toBlob(async (blob) => {
             const file = new File([blob], "attendance_status.png", { type: "image/png" });
-            
             if (navigator.share) {
-                try {
-                    await navigator.share({
-                        files: [file],
-                        title: 'My Attendance',
-                    });
-                } catch (err) { console.log('Share closed'); }
+                try { await navigator.share({ files: [file], title: 'My Attendance' }); } 
+                catch (err) { console.log('Share closed'); }
             } else {
                 const link = document.createElement('a');
                 link.download = 'attendance.png';
