@@ -90,14 +90,19 @@ const app = {
     globalStats: {},
 
     init: function() {
-        const u = localStorage.getItem('rgit_user');
+        // Check Local (Remembered) OR Session (Temporary)
+        const u = localStorage.getItem('rgit_user') || sessionStorage.getItem('rgit_user');
+        
         if(u) {
             this.user = JSON.parse(u);
+            // Load stats from LocalStorage regardless of login type (stats should persist)
             this.attendanceLog = JSON.parse(localStorage.getItem(`log_${this.user.id}`) || '{}');
             this.globalStats = JSON.parse(localStorage.getItem(`stats_${this.user.id}`) || '{}');
             this.showMain();
         } else {
             document.getElementById('loginView').classList.remove('hidden');
+            // Re-attach focus listener if needed (from previous step)
+            this.attachFocusListeners(); 
         }
     },
 
@@ -170,9 +175,21 @@ const app = {
     login: function() {
         const r = document.getElementById('rollInput').value;
         const student = RGIT_DATA.students[r];
+        
         if(student) {
             this.user = { id:r, ...student };
-            localStorage.setItem('rgit_user', JSON.stringify(this.user));
+            const remember = document.getElementById('rememberMe').checked;
+
+            if (remember) {
+                // Save permanently
+                localStorage.setItem('rgit_user', JSON.stringify(this.user));
+            } else {
+                // Save only for this session
+                sessionStorage.setItem('rgit_user', JSON.stringify(this.user));
+                // Clear any old permanent data just in case
+                localStorage.removeItem('rgit_user'); 
+            }
+            
             this.init();
         } else {
             document.getElementById('errorMsg').innerText = "Roll number not found!";
@@ -182,7 +199,20 @@ const app = {
     logout: function() {
         if(confirm('Log out?')) {
             localStorage.removeItem('rgit_user');
+            sessionStorage.removeItem('rgit_user');
             location.reload();
+        }
+    },
+    
+    // Helper for the keyboard fix (Add this if you haven't already)
+    attachFocusListeners: function() {
+        const inputField = document.getElementById('rollInput');
+        const loginView = document.getElementById('loginView');
+        if (inputField && loginView) {
+            inputField.addEventListener('focus', () => loginView.classList.add('typing-mode'));
+            inputField.addEventListener('blur', () => {
+                setTimeout(() => loginView.classList.remove('typing-mode'), 200);
+            });
         }
     },
 
@@ -430,6 +460,9 @@ const app = {
                 <button onclick="app.resetData()" style="background:none; border:none; color:var(--red-text); font-size:0.85rem; cursor:pointer;">
                     <i class="bi bi-trash"></i> Reset All Data
                 </button>
+                <div class="scroll-credit">
+                    Made with ❤️ by <b>Vaibhav</b>
+                </div>
             </div>
         `;
 
