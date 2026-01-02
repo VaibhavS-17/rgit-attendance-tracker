@@ -3,7 +3,6 @@
 A web-based attendance tracker for RGIT Computer Engineering (Div F) students.
 
 ### 🔗 **Live Website:** [Click here to use the App](https://vaibhavs-17.github.io/rgit-attendance-tracker/)
-*(Note: If you deployed this to Cloudflare or Netlify, replace the link above with your new URL)*
 
 ## Features
 
