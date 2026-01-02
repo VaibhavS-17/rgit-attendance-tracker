@@ -1,16 +1,16 @@
 :root {
-    /* Color Palette */
-    --bg-body: #050505;
-    --bg-card: #11161d;
-    --bg-header: rgba(5, 5, 5, 0.95);
+    /* IMPROVED COLOR PALETTE */
+    --bg-body: #0d1117;       /* Dark Blue-Grey (Not pitch black) */
+    --bg-card: #161b22;       /* Lighter layer for cards */
+    --bg-header: rgba(13, 17, 23, 0.85); /* Matches body with blur */
     
-    --text-main: #edf2f7;
+    --text-main: #f0f6fc;     /* Brighter white text */
     --text-muted: #8b949e;
     
     --accent: #2f81f7; 
-    --border: #21262d;
+    --border: #30363d;        /* Lighter border for better separation */
     
-    /* Status Colors */
+    /* Status Colors (Kept the same) */
     --green-bg: rgba(35, 134, 54, 0.15);
     --green-text: #3fb950;
     --green-bar: #238636;
@@ -111,8 +111,13 @@ body {
 .card-col { flex-grow: 1; min-width: 0; }
 
 .class-card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px;
-    padding: 16px; position: relative; box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    background: var(--bg-card); 
+    border: 1px solid var(--border); 
+    border-radius: 18px;
+    padding: 16px; 
+    position: relative; 
+    /* NEW: Stronger shadow for separation */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2); 
 }
 
 /* RECESS CARD */
@@ -166,8 +171,13 @@ body {
 
 /* --- SUBJECTS TAB --- */
 .sub-card {
-    background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
-    padding: 16px; margin-bottom: 16px;
+    background: var(--bg-card); 
+    border: 1px solid var(--border); 
+    border-radius: 16px;
+    padding: 16px; 
+    margin-bottom: 16px;
+    /* NEW: Stronger shadow */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 .sub-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #fff; }
 .stat-row { display: flex; align-items: center; margin-bottom: 10px; }
