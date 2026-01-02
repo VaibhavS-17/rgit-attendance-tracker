@@ -33,7 +33,7 @@ const RGIT_DATA = {
         "EG": { name: "Engg. Graphics", prof: "Prof. R.N. Shanmukha", types: ["LEC", "PRAC"] },
         "AM-II": { name: "Applied Maths-II", prof: "Prof. B.B. Sawant", types: ["LEC", "TUT"] },
         "SS&CS": { name: "Social Science", prof: "Prof. D.K. Chakradev", types: ["LEC", "PRAC"] },
-        "WORKSHOP": { name: "Workshop-II", prof: "Workshop Staff", types: ["PRAC"] }
+        "WS-II": { name: "Workshop-II", prof: "Workshop Staff", types: ["PRAC"] }
     },
 
     schedule: {
@@ -43,12 +43,12 @@ const RGIT_DATA = {
             {t:"10:30", e:"11:30", c:"IKS", type:"LEC"}, 
             {t:"11:30", e:"12:30", c:"PP", type:"LEC"},
             {t:"12:30", e:"13:15", type:"BREAK", name:"RECESS"},
-            {t:"13:15", e:"15:15", map:{"F1":"WORKSHOP","F2":"WORKSHOP","F3":"DS"}, type:"PRAC"}, 
+            {t:"13:15", e:"15:15", map:{"F1":"WS-II","F2":"WS-II","F3":"DS"}, type:"PRAC"}, 
             {t:"15:15", e:"16:15", c:"AM-II", type:"TUT"}
         ],
         2: [ // TUE
-            {t:"08:30", e:"09:30", map:{"F1":"DS","F2":"EC","F3":"WORKSHOP"}, type:"PRAC"},
-            {t:"09:30", e:"10:30", map:{"F1":"DS","F2":"EP","F3":"WORKSHOP"}, type:"PRAC"},
+            {t:"08:30", e:"09:30", map:{"F1":"DS","F2":"EC","F3":"WS-II"}, type:"PRAC"},
+            {t:"09:30", e:"10:30", map:{"F1":"DS","F2":"EP","F3":"WS-II"}, type:"PRAC"},
             {t:"10:30", e:"11:30", c:"DS", type:"LEC"}, 
             {t:"11:30", e:"12:30", c:"PP", type:"LEC"},
             {t:"12:30", e:"13:15", type:"BREAK", name:"RECESS"},
