@@ -375,23 +375,28 @@ const app = {
         return `${hour}:${m} ${ampm}`;
     },
 
-            loadDay: function(date) {
+                loadDay: function(date) {
         const container = document.getElementById('timelineList');
         container.innerHTML = '';
         const dayIdx = date.getDay(); 
         const dateKey = date.toISOString().split('T')[0];
         const todaysClasses = RGIT_DATA.schedule[dayIdx];
 
+        // --- SCENARIO 1: NO CLASSES (e.g. Sunday) ---
         if(!todaysClasses) {
             container.innerHTML = `
             <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:300px; color:var(--text-muted);">
                 <i class="bi bi-cup-hot" style="font-size: 3rem; margin-bottom: 15px; opacity:0.5;"></i>
                 <h3 style="margin:0; font-weight:600; color:var(--text-main);">No Classes Today</h3>
                 <p style="margin:5px 0 0 0; font-size:0.9rem;">Enjoy your day off!</p>
+            </div>
+            <div class="scroll-credit" style="font-size: 0.9rem; opacity: 0.8; margin-top:-40px;">
+                Made with ❤️ by <b>Vaibhav</b>
             </div>`;
             return;
         }
 
+        // --- SCENARIO 2: CLASSES EXIST ---
         todaysClasses.forEach(slot => {
             if(slot.type === 'BREAK') {
                 container.innerHTML += `
@@ -413,15 +418,15 @@ const app = {
                 return;
             }
 
-            // 1. Determine Subject Code
+            // Determine Subject Code
             let code = slot.c;
             if(slot.map) code = slot.map[this.user.b];
             
-            // 2. Determine Room Number (New Logic)
+            // Determine Room Number
             let room = slot.r || ""; 
             if(slot.rMap) room = slot.rMap[this.user.b];
             
-            // Create the Room HTML snippet (only if room exists)
+            // Create Room HTML
             const roomHtml = room ? `<div class="room-loc"><i class="bi bi-geo-alt-fill"></i> ${room}</div>` : '';
 
             const uniqueKey = `${code}_${slot.type}`;
@@ -473,6 +478,12 @@ const app = {
                 </div>
             </div>`;
         });
+
+        // --- ADDED: WATERMARK AT BOTTOM OF LIST ---
+        container.innerHTML += `
+            <div class="scroll-credit" style="margin-top: 20px;">
+                Made with ❤️ by <b>Vaibhav</b>
+            </div>`;
     },
 
     toggle: function(dateKey, uniqueKey, newStatus) {
