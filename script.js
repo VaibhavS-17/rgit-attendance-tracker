@@ -1,3 +1,14 @@
+// --- PWA INSTALL LOGIC ---
+let deferredPrompt; // Saves the install event
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e; // Save it for later
+  // If the app is already running, we can update the UI now
+  if(app && document.getElementById('subjectList')) {
+      app.renderSubjects(); // Re-render to show the button
+  }
+});
+
 // --- 1. DATA ---
 const RGIT_DATA = {
     students: {
@@ -555,12 +566,12 @@ const app = {
         this.loadDay(this.selectedDate);
     },
 
-            renderSubjects: function() {
+                renderSubjects: function() {
         const container = document.getElementById('subjectList');
         container.innerHTML = ''; 
         const subjects = Object.keys(RGIT_DATA.subjects);
         
-        // 1. Generate Subject Cards
+        // 1. Generate Subject Cards (Same as before)
         subjects.forEach(code => {
             const subjectData = RGIT_DATA.subjects[code];
             const types = subjectData.types || ['LEC'];
@@ -569,8 +580,8 @@ const app = {
             types.forEach(type => {
                 const key = `${code}_${type}`;
                 const stats = this.globalStats[key] || {p:0, t:0};
-                
                 const pct = stats.t === 0 ? 0 : Math.round((stats.p / stats.t) * 100);
+                
                 let colorVar = 'var(--red-bar)';
                 let predMsg = 'No classes yet.';
                 let predClass = 'pred-red';
@@ -587,58 +598,65 @@ const app = {
                         if(pct >= 60) colorVar = 'var(--yellow-bar)';
                     }
                 } else {
-                     colorVar = '#30363d'; 
-                     predClass = '';
+                     colorVar = '#30363d'; predClass = '';
                 }
 
                 rowsHtml += `
                     <div class="stat-row">
                         <span class="tag ${type} stat-tag">${type}</span>
-                        <div class="progress-track">
-                             <div class="progress-fill" style="width:0%; background:${colorVar}" data-width="${pct}%"></div>
-                        </div>
+                        <div class="progress-track"><div class="progress-fill" style="width:0%; background:${colorVar}" data-width="${pct}%"></div></div>
                         <span class="stat-pct" style="color:${colorVar}">${pct}%</span>
                     </div>
-                    <div class="stat-details">
-                        ${stats.p}/${stats.t} Attended
-                        <div class="prediction-box ${predClass}">${predMsg}</div>
-                    </div>
+                    <div class="stat-details">${stats.p}/${stats.t} Attended<div class="prediction-box ${predClass}">${predMsg}</div></div>
                 `;
             });
 
-            container.innerHTML += `
-                <div class="sub-card">
-                    <div class="sub-title">${subjectData.name}</div>
-                    ${rowsHtml}
-                </div>
-            `;
+            container.innerHTML += `<div class="sub-card"><div class="sub-title">${subjectData.name}</div>${rowsHtml}</div>`;
         });
 
-        // 2. ADD INSTALL TIP & RESET BUTTON
-        container.innerHTML += `
-            <div style="text-align: center; margin-top: 25px; padding: 0 20px 20px;">
-                
+        // 2. SMART INSTALL SECTION
+        let installHtml = '';
+        
+        // Scenario A: Android/Chrome (Can install automatically)
+        if (window.deferredPrompt) {
+            installHtml = `
+                <button onclick="app.triggerInstall()" style="background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-left: auto; margin-right: auto;">
+                    <i class="bi bi-download"></i> Install App
+                </button>
+            `;
+        } 
+        // Scenario B: iPhone/iPad (Must use text instructions)
+        else {
+            installHtml = `
                 <div style="background: var(--bg-card); border: 1px dashed var(--border); padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 0.85rem; color: var(--text-muted);">
                     <i class="bi bi-phone" style="font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; display: block;"></i>
-                    <strong>Install App:</strong> Tap <i class="bi bi-three-dots-vertical"></i> or <i class="bi bi-share"></i><br> then select <b>"Add to Home Screen"</b>
+                    <strong>Install App:</strong> Tap <i class="bi bi-three-dots-vertical"></i> or <i class="bi bi-share"></i> then <b>"Add to Home Screen"</b>
                 </div>
+            `;
+        }
 
+        container.innerHTML += `
+            <div style="text-align: center; margin-top: 25px; padding: 0 20px 20px;">
+                ${installHtml}
                 <button onclick="app.resetData()" style="background:none; border:none; color:var(--red-text); font-size:0.85rem; cursor:pointer; opacity: 0.8;">
                     <i class="bi bi-trash"></i> Reset All Data
                 </button>
-                
-                <div class="scroll-credit" style="margin-top: 15px;">
-                    Made with ❤️ by <b>Vaibhav</b>
-                </div>
+                <div class="scroll-credit" style="margin-top: 15px;">Made with ❤️ by <b>Vaibhav</b></div>
             </div>
         `;
 
-        // 3. Trigger Animation
-        setTimeout(() => {
-            document.querySelectorAll('.progress-fill').forEach(el => {
-                el.style.width = el.getAttribute('data-width');
-            });
-        }, 50);
+        setTimeout(() => { document.querySelectorAll('.progress-fill').forEach(el => { el.style.width = el.getAttribute('data-width'); }); }, 50);
+    },
+
+    // 3. Add the Trigger Function
+    triggerInstall: async function() {
+        if (window.deferredPrompt) {
+            window.deferredPrompt.prompt(); // Show the native prompt
+            const { outcome } = await window.deferredPrompt.userChoice;
+            console.log(`User response: ${outcome}`);
+            window.deferredPrompt = null; // Used once, discard it
+            this.renderSubjects(); // Hide the button
+        }
     },
 
     isNow: function(t) {
