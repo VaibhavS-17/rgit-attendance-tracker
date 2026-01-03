@@ -158,57 +158,178 @@ const app = {
         const originalIcon = btn ? btn.innerHTML : '';
         if(btn) btn.innerHTML = '<i class="bi bi-hourglass-split"></i>'; 
 
+        // 1. Calculate Data
         let totalP = 0, totalT = 0;
         Object.values(this.globalStats).forEach(s => { totalP += s.p; totalT += s.t; });
         const pct = totalT === 0 ? 0 : Math.round((totalP/totalT)*100);
         const status = this.getStatus(pct, totalT);
-        
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+        // 2. Canvas Setup
         const canvas = document.createElement('canvas');
-        const size = 1080; canvas.width = size; canvas.height = size;
+        const size = 1080; 
+        canvas.width = size; 
+        canvas.height = size;
         const ctx = canvas.getContext('2d');
 
-        // Draw
-        const grd = ctx.createLinearGradient(0, 0, 0, size);
-        grd.addColorStop(0, '#161b22'); grd.addColorStop(1, '#0d1117'); 
-        ctx.fillStyle = grd; ctx.fillRect(0, 0, size, size);
+        // --- BACKGROUND ---
+        ctx.fillStyle = "#050505"; 
+        ctx.fillRect(0, 0, size, size);
+
+        // Faint Mesh Pattern
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(40, 40, 40, 0.3)";
+        for(let i=0; i<size; i+=108) {
+            ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, size); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(size, i); ctx.stroke();
+        }
+
+        // --- HELPER FUNCTION FOR BOXES ---
+        function drawBox(x, y, w, h, color = "#161b22") {
+            ctx.fillStyle = color;
+            ctx.shadowBlur = 0;
+            ctx.beginPath();
+            ctx.roundRect(x, y, w, h, 32);
+            ctx.fill();
+            
+            // Inner Border
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "rgba(255,255,255,0.08)";
+            ctx.stroke();
+        }
+
+        // --- GRID LAYOUT DEFINITIONS ---
+        const pad = 60; // Padding from edge
+        const gap = 30; // Gap between boxes
+        const boxW_Full = size - (pad * 2);
+        
+        // 1. PROFILE CARD (Top Wide)
+        const h1 = 240;
+        drawBox(pad, pad, boxW_Full, h1);
+        
+        // 2. MAIN SCORE CARD (Bottom Left - INCREASED HEIGHT)
+        const h2 = 520; // Increased from 450
+        const w2 = 550;
+        drawBox(pad, pad + h1 + gap, w2, h2);
+
+        // 3. STATS STACK (Bottom Right - TALLER)
+        const w3 = boxW_Full - w2 - gap;
+        const h3 = (h2 - gap) / 2; // Automatically grows with h2
+        // Top Stat Box
+        drawBox(pad + w2 + gap, pad + h1 + gap, w3, h3);
+        // Bottom Stat Box
+        drawBox(pad + w2 + gap, pad + h1 + gap + h3 + gap, w3, h3);
+
+        // 4. QUOTE CARD (Bottom Wide - SLIMMER)
+        const h4 = 130; // Reduced from 180
+        const y4 = pad + h1 + gap + h2 + gap;
+        
+        // Use status color for this box background (faint)
+        ctx.shadowBlur = 40;
+        ctx.shadowColor = status.c;
+        drawBox(pad, y4, boxW_Full, h4, "#0d1117");
+        ctx.strokeStyle = status.c; // Colored border
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+
+        // --- TEXT CONTENT ---
+        ctx.textAlign = "left";
+
+        // 1. TOP CARD CONTENT
+        ctx.fillStyle = "#8b949e";
+        ctx.font = "600 24px Inter, sans-serif";
+        ctx.fillText("ATTENDANCE STATUS", pad + 50, pad + 60);
+
+        // Date (Top Right - LARGER & WHITE)
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#ffffff"; 
+        ctx.font = "bold 32px Inter, sans-serif"; // Increased Size
+        ctx.fillText(dateStr, pad + boxW_Full - 50, pad + 65);
+        ctx.textAlign = "left"; 
+        
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "800 65px Inter, sans-serif";
+        ctx.fillText(this.user.n, pad + 45, pad + 145);
+        
+        ctx.fillStyle = "#58a6ff"; // Blue Accent
+        ctx.font = "500 32px Inter, sans-serif";
+        ctx.fillText(`${this.user.id} • Batch ${this.user.b} • Div F`, pad + 50, pad + 195);
+
+        // 2. SCORE CONTENT (With GLOW)
+        const cx = pad + (w2/2);
+        const cy = pad + h1 + gap + (h2/2);
+        const r = 160; // Larger Radius
+
+        // Track
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI*2);
+        ctx.lineWidth = 30; ctx.strokeStyle = "rgba(255,255,255,0.05)"; ctx.stroke();
+        
+        // Indicator with GLOW
+        const endAngle = ((pct / 100) * 2 * Math.PI) - 0.5 * Math.PI;
+        
+        ctx.shadowBlur = 50;       // Neon Glow Strength
+        ctx.shadowColor = status.c; // Glow Color
+        
+        ctx.beginPath(); ctx.arc(cx, cy, r, -0.5 * Math.PI, endAngle);
+        ctx.strokeStyle = status.c; ctx.lineCap = "round"; ctx.stroke();
+        
+        ctx.shadowBlur = 0; // Reset
 
         ctx.textAlign = "center";
-        ctx.fillStyle = "#ffffff"; ctx.font = "bold 60px Inter, sans-serif";
-        ctx.fillText("ATTENDANCE CHECK", size/2, 150);
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 110px Inter, sans-serif"; // Bigger Number
+        ctx.fillText(`${pct}%`, cx, cy + 38);
+        
+        ctx.font = "500 24px Inter, sans-serif";
+        ctx.fillStyle = "#8b949e";
+        ctx.fillText("Overall Attendance", cx, cy + 210);
 
-        ctx.fillStyle = "#f0f6fc"; ctx.font = "600 50px Inter, sans-serif"; 
-        ctx.fillText(`${this.user.n} • ${this.user.id}`, size/2, 230);
+        // 3. STATS CONTENT
+        // Stat 1: Attended
+        let sx = pad + w2 + gap + (w3/2);
+        let sy = pad + h1 + gap + (h3/2);
+        
+        ctx.fillStyle = "#3fb950"; // Green
+        ctx.font = "bold 90px Inter, sans-serif"; // Bigger Stats
+        ctx.fillText(totalP, sx, sy + 25);
+        
+        ctx.fillStyle = "#8b949e";
+        ctx.font = "500 22px Inter, sans-serif";
+        ctx.fillText("LECTURES ATTENDED", sx, sy + 70);
 
-        ctx.fillStyle = "#8b949e"; ctx.font = "500 35px Inter, sans-serif";
-        ctx.fillText("Computer Engineering • Div F", size/2, 290);
+        // Stat 2: Total
+        sy = pad + h1 + gap + h3 + gap + (h3/2);
+        
+        ctx.fillStyle = "#ffffff"; 
+        ctx.font = "bold 90px Inter, sans-serif"; // Bigger Stats
+        ctx.fillText(totalT, sx, sy + 25);
+        
+        ctx.fillStyle = "#8b949e";
+        ctx.font = "500 22px Inter, sans-serif";
+        ctx.fillText("TOTAL CONDUCTED", sx, sy + 70);
 
-        const centerX = size/2, centerY = size/2 + 50, radius = 250;
-        ctx.beginPath(); ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = "#21262d"; ctx.lineWidth = 40; ctx.lineCap = 'round'; ctx.stroke();
+        // 4. QUOTE CONTENT
+        const qy = y4 + (h4/2);
+        ctx.fillStyle = status.c;
+        ctx.font = "bold 40px Inter, sans-serif";
+        ctx.fillText(status.t, size/2, qy + 15);
 
-        const endAngle = ((pct / 100) * 2 * Math.PI) - 0.5 * Math.PI;
-        ctx.beginPath(); ctx.arc(centerX, centerY, radius, -0.5 * Math.PI, endAngle);
-        ctx.strokeStyle = status.c; ctx.lineWidth = 40; ctx.lineCap = 'round';
-        ctx.shadowBlur = 30; ctx.shadowColor = status.c; ctx.stroke(); ctx.shadowBlur = 0; 
+        // 5. FOOTER
+        ctx.font = "600 22px Inter, sans-serif"; 
+        ctx.fillStyle = "#2f81f7"; 
+        ctx.textAlign = "center";
+        ctx.fillText("Designed by Vaibhav", size/2, size - 35);
 
-        ctx.fillStyle = status.c; ctx.font = "bold 180px Inter, sans-serif";
-        ctx.fillText(`${pct}%`, centerX, centerY + 60);
-
-        ctx.fillStyle = "#f0f6fc"; ctx.font = "bold 50px Inter, sans-serif";
-        ctx.fillText(status.t, centerX, 920);
-
-        ctx.fillStyle = "#30363d"; ctx.fillRect(100, 960, 880, 2); 
-        ctx.fillStyle = "#8b949e"; ctx.font = "500 35px Inter, sans-serif";
-        ctx.fillText("RGIT Tracker", centerX, 1010);
-        ctx.font = "600 35px Inter, sans-serif"; ctx.fillStyle = "#58a6ff"; 
-        ctx.fillText("Designed by Vaibhav", centerX, 1055);
-
+        // --- EXPORT ---
         canvas.toBlob(async (blob) => {
-            const file = new File([blob], "attendance_status.png", { type: "image/png" });
-            if (navigator.share) {
-                try { await navigator.share({ files: [file], title: 'My Attendance' }); } catch (e) {}
+            const file = new File([blob], `Attendance_${this.user.id}.png`, { type: "image/png" });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try { await navigator.share({ files: [file], title: 'My Attendance', text: `Attendance: ${pct}%` }); } catch (e) {}
             } else {
-                const link = document.createElement('a'); link.download = 'attendance.png';
+                const link = document.createElement('a'); link.download = `Attendance_${this.user.id}.png`;
                 link.href = canvas.toDataURL(); link.click();
             }
             if(btn) btn.innerHTML = originalIcon; 
