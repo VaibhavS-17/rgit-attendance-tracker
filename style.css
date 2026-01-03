@@ -435,3 +435,24 @@ body {
 .modal-actions { display: flex; gap: 12px; }
 .btn-cancel { flex: 1; background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 12px; border-radius: 10px; }
 .btn-save { flex: 1; background: var(--green-bar); border: none; color: white; padding: 12px; border-radius: 10px; font-weight: 600; }
+
+.privacy-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 20px;
+    line-height: 1.4;
+    text-align: left;
+}
+
+.privacy-note i {
+    color: var(--accent);
+    margin-right: 5px;
+}
+
+.privacy-note strong {
+    color: #e6edf3;
+}
