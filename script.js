@@ -450,7 +450,7 @@ const app = {
     },
 
     loadDay: function(date) {
-        const container = document.getElementById('timelineList'); // Fixed typo here
+        const container = document.getElementById('timelineList');
         container.innerHTML = '';
         
         const dayIdx = date.getDay(); 
@@ -493,12 +493,23 @@ const app = {
             if(slot.rMap) room = slot.rMap[this.user.b];
             const roomHtml = room ? `<div class="room-loc"><i class="bi bi-geo-alt-fill"></i> ${room}</div>` : '';
 
-            const uniqueKey = `${code}_${slot.type}`;
-            const meta = RGIT_DATA.subjects[code] || {name: code, prof: ""};
-            const dailyStatus = (this.attendanceLog[dateKey] && this.attendanceLog[dateKey][uniqueKey]) || null;
+            // --- KEY FIX STARTS HERE ---
             
-            if(!this.globalStats[uniqueKey]) this.globalStats[uniqueKey] = {p:0, t:0};
-            const stats = this.globalStats[uniqueKey];
+            // 1. Stats Key: Used to calculate totals (Must match Subject Name)
+            const statsKey = `${code}_${slot.type}`;
+            
+            // 2. Log Key: Used for the specific button on this specific day
+            // If it's an extra class, use its unique ID. If standard, use code+type.
+            const logKey = (slot.isExtra && slot.id) ? slot.id : statsKey;
+
+            const meta = RGIT_DATA.subjects[code] || {name: code, prof: ""};
+            
+            // Check status using the LOG KEY (Specific)
+            const dailyStatus = (this.attendanceLog[dateKey] && this.attendanceLog[dateKey][logKey]) || null;
+            
+            // Calculate stats using the STATS KEY (Grouped)
+            if(!this.globalStats[statsKey]) this.globalStats[statsKey] = {p:0, t:0};
+            const stats = this.globalStats[statsKey];
             const pct = stats.t === 0 ? 0 : Math.round((stats.p/stats.t)*100);
             
             let ringColor = '#da3633';
@@ -523,9 +534,9 @@ const app = {
                             </div>
                         </div>
                         <div class="btn-grid">
-                            <button class="act-btn can ${dailyStatus==='C'?'active':''}" onclick="app.toggle('${dateKey}', '${uniqueKey}', 'C')"><i class="bi bi-slash-circle"></i> Can</button>
-                            <button class="act-btn abs ${dailyStatus==='A'?'active':''}" onclick="app.toggle('${dateKey}', '${uniqueKey}', 'A')"><i class="bi bi-x-circle"></i> Abs</button>
-                            <button class="act-btn pre ${dailyStatus==='P'?'active':''}" onclick="app.toggle('${dateKey}', '${uniqueKey}', 'P')"><i class="bi bi-check-circle"></i> Pre</button>
+                            <button class="act-btn can ${dailyStatus==='C'?'active':''}" onclick="app.toggle('${dateKey}', '${logKey}', '${statsKey}', 'C')"><i class="bi bi-slash-circle"></i> Can</button>
+                            <button class="act-btn abs ${dailyStatus==='A'?'active':''}" onclick="app.toggle('${dateKey}', '${logKey}', '${statsKey}', 'A')"><i class="bi bi-x-circle"></i> Abs</button>
+                            <button class="act-btn pre ${dailyStatus==='P'?'active':''}" onclick="app.toggle('${dateKey}', '${logKey}', '${statsKey}', 'P')"><i class="bi bi-check-circle"></i> Pre</button>
                         </div>
                     </div>
                 </div>
@@ -540,22 +551,33 @@ const app = {
             <div class="scroll-credit" style="margin-top: 20px;">Made with ❤️ by <b>Vaibhav</b></div>`;
     },
 
-    toggle: function(dateKey, uniqueKey, newStatus) {
+    // UPDATED: Now accepts logKey (for memory) and statsKey (for math)
+    toggle: function(dateKey, logKey, statsKey, newStatus) {
         this.vibrate(); 
         if(!this.attendanceLog[dateKey]) this.attendanceLog[dateKey] = {};
-        const currentStatus = this.attendanceLog[dateKey][uniqueKey];
-        if(!this.globalStats[uniqueKey]) this.globalStats[uniqueKey] = {p:0, t:0};
-        let stats = this.globalStats[uniqueKey];
+        
+        // 1. Check Previous Status using the unique LOG KEY
+        const currentStatus = this.attendanceLog[dateKey][logKey];
+        
+        // 2. Prepare Stats using the Grouped STATS KEY
+        if(!this.globalStats[statsKey]) this.globalStats[statsKey] = {p:0, t:0};
+        let stats = this.globalStats[statsKey];
 
+        // 3. Update Logic
         if(currentStatus) {
+            // Remove effect of old status
             if(currentStatus === 'P') { stats.p--; stats.t--; }
             if(currentStatus === 'A') { stats.t--; }
-            delete this.attendanceLog[dateKey][uniqueKey];
+            // Remove from daily log
+            delete this.attendanceLog[dateKey][logKey];
         }
+        
         if(currentStatus !== newStatus) {
+            // Add effect of new status
             if(newStatus === 'P') { stats.p++; stats.t++; }
             if(newStatus === 'A') { stats.t++; }
-            this.attendanceLog[dateKey][uniqueKey] = newStatus;
+            // Save to daily log
+            this.attendanceLog[dateKey][logKey] = newStatus;
         }
 
         localStorage.setItem(`log_${this.user.id}`, JSON.stringify(this.attendanceLog));
@@ -706,8 +728,15 @@ const app = {
         const time = document.getElementById('extraTime').value;
         const dateKey = this.selectedDate.toISOString().split('T')[0];
         
-        // Use the currentExtraType which is now guaranteed to be valid
-        const newClass = { t: time, e: time, c: code, type: this.currentExtraType, isExtra: true };
+        // CHANGED: Added 'id' field using Date.now() to ensure it is unique
+        const newClass = { 
+            id: `ex_${Date.now()}`, 
+            t: time, 
+            e: time, 
+            c: code, 
+            type: this.currentExtraType, 
+            isExtra: true 
+        };
 
         if (!this.extraClasses[dateKey]) this.extraClasses[dateKey] = [];
         this.extraClasses[dateKey].push(newClass);
@@ -715,7 +744,7 @@ const app = {
         
         document.getElementById('addModal').classList.add('hidden');
         this.loadDay(this.selectedDate);
-    }
+    },
 };
 
 // Start the App
