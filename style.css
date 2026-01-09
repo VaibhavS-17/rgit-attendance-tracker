@@ -457,24 +457,28 @@ body {
     color: #e6edf3;
 }
 
-/* Trash Button*/
+/* Container for the Ring + Delete Button */
+.header-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px; 
+    height: 42px;
+}
+
+/* Clean Trash Button */
 .trash-btn {
-    position: relative; 
-    
     background: rgba(218, 54, 51, 0.1);
     color: var(--red-text);
     border: 1px solid rgba(218, 54, 51, 0.2);
-    
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s;
-    
     flex-shrink: 0;
 }
 
