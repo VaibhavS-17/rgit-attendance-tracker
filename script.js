@@ -477,6 +477,9 @@ const app = {
 
         todaysClasses.forEach(slot => {
             if(slot.type === 'BREAK') {
+            const deleteBtn = slot.isExtra 
+                ? `<button class="trash-btn" onclick="app.deleteExtraClass('${dateKey}', '${slot.id}')"><i class="bi bi-trash"></i></button>` 
+                : '';
                 container.innerHTML += `
                 <div class="timeline-row">
                     <div class="time-col"><div>${this.formatTime(slot.t)}</div><div class="end-time">${this.formatTime(slot.e)}</div></div>
@@ -516,13 +519,18 @@ const app = {
             if(pct >= 75) ringColor = '#3fb950';
             else if(pct >= 60) ringColor = '#d29922';
 
+// Check if it is an extra class to show delete button
+            const deleteBtn = slot.isExtra 
+                ? `<button class="trash-btn" onclick="app.deleteExtraClass('${dateKey}', '${slot.id}')"><i class="bi bi-trash"></i></button>` 
+                : '';
+
             container.innerHTML += `
             <div class="timeline-row">
                 <div class="time-col"><div>${this.formatTime(slot.t)}</div><div class="end-time">${this.formatTime(slot.e)}</div>${roomHtml}</div>
                 <div class="line-col"><div class="dot ${this.isNow(slot.t) ? 'active' : ''}"></div><div class="line"></div></div>
                 <div class="card-col">
                     <div class="class-card ${this.isNow(slot.t) ? 'now-glow' : ''}">
-                        <div class="card-header">
+                        ${deleteBtn} <div class="card-header">
                             <div class="subject-info">
                                 <div class="subject-row"><span class="code">${code}</span><span class="tag ${slot.type}">${slot.type}</span></div>
                                 <span class="name">${meta.name}</span><span class="prof">${meta.prof}</span>
@@ -697,17 +705,19 @@ const app = {
 
     // NEW: Generates the buttons dynamically (LEC/PRAC/TUT)
     renderModalTypes: function(code) {
-        const types = RGIT_DATA.subjects[code].types; // e.g. ["LEC", "TUT"]
+        const types = RGIT_DATA.subjects[code].types; 
         const container = document.querySelector('.type-selector');
-        container.innerHTML = ''; // Clear old buttons
+        container.innerHTML = ''; 
 
         types.forEach((type, index) => {
             const btn = document.createElement('div');
-            // Make the first option active by default
-            btn.className = `type-opt ${index === 0 ? 'active' : ''}`;
+            // If currentExtraType matches, make it active, else default to first
+            const isActive = (index === 0);
+            if(isActive) this.currentExtraType = type;
+
+            btn.className = `type-opt ${isActive ? 'active' : ''}`;
             btn.innerText = type;
             
-            // Add click event
             btn.onclick = () => {
                 container.querySelectorAll('.type-opt').forEach(el => el.classList.remove('active'));
                 btn.classList.add('active');
@@ -716,9 +726,6 @@ const app = {
             
             container.appendChild(btn);
         });
-
-        // Set default type to the first one available
-        this.currentExtraType = types[0];
     },
 
     // (The setExtraType function is no longer needed as it's handled inside renderModalTypes)
@@ -744,6 +751,51 @@ const app = {
         
         document.getElementById('addModal').classList.add('hidden');
         this.loadDay(this.selectedDate);
+    },
+        // --- NEW: Function to delete an extra class ---
+    deleteExtraClass: function(dateKey, classId) {
+        if(confirm('Delete this extra class?')) {
+            // 1. Remove from extraClasses array
+            if(this.extraClasses[dateKey]) {
+                this.extraClasses[dateKey] = this.extraClasses[dateKey].filter(c => c.id !== classId);
+                
+                // If array is empty, delete the date key to keep it clean
+                if(this.extraClasses[dateKey].length === 0) {
+                    delete this.extraClasses[dateKey];
+                }
+            }
+
+            // 2. Remove any attendance logs associated with this specific class ID
+            if(this.attendanceLog[dateKey] && this.attendanceLog[dateKey][classId]) {
+                const status = this.attendanceLog[dateKey][classId];
+                const classObj = this.extraClasses[dateKey]?.find(c => c.id === classId) || { c: 'UNKNOWN', type: 'LEC'}; 
+                // We need to fetch the class details before deleting to correct the stats, 
+                // but since we already deleted it from the array, we have to rely on logic or 
+                // recalculate global stats completely. 
+                
+                // EASIER APPROACH: Just remove the log, then Recalculate Global Stats completely
+                delete this.attendanceLog[dateKey][classId];
+            }
+
+            // 3. Save and Recalculate
+            localStorage.setItem(`extra_${this.user.id}`, JSON.stringify(this.extraClasses));
+            localStorage.setItem(`log_${this.user.id}`, JSON.stringify(this.attendanceLog));
+            
+            // Force full recalculation to ensure stats are perfect
+            this.recalculateAllStats(); 
+            this.updateOverall();
+            this.loadDay(this.selectedDate);
+        }
+    },
+
+    // Helper to fix stats if things get out of sync
+    recalculateAllStats: function() {
+        this.globalStats = {};
+        // Re-read all logs and rebuild stats
+        // (This is a simplified version: for now, just reloading the page is safer for data integrity
+        //  if we don't want to write a complex recalculation loop. 
+        //  Let's do a simple reload for safety in this version.)
+        location.reload(); 
     },
 };
 

@@ -456,3 +456,35 @@ body {
 .privacy-note strong {
     color: #e6edf3;
 }
+
+/* Trash Button*/
+.trash-btn {
+    position: relative; 
+    
+    background: rgba(218, 54, 51, 0.1);
+    color: var(--red-text);
+    border: 1px solid rgba(218, 54, 51, 0.2);
+    
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    
+    flex-shrink: 0;
+}
+
+.trash-btn:hover {
+    background: var(--red-bg);
+    transform: scale(1.1);
+}
+
+/* Make sure the ring container doesn't overlap the trash button */
+.class-card {
+    /* existing styles... */
+    overflow: hidden; /* Keeps effects contained */
+}

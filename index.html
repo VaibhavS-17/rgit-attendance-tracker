@@ -34,17 +34,18 @@
                 </label>
             </div>
             <button onclick="app.login()" class="btn-primary">Get Started</button>
-            
+
             <div class="privacy-note">
-                <i class="bi bi-shield-lock"></i> 
-                <strong>Offline Mode:</strong> Login is used only to fetch your Batch/Name. 
+                <i class="bi bi-shield-lock"></i>
+                <strong>Offline Mode:</strong> Login is used only to fetch your Batch/Name.
                 Your attendance is stored locally on this device. You cannot edit others' data.
             </div>
 
             <div id="errorMsg" class="error-msg"></div>
         </div>
-         <div class="app-footer">
+        <div class="app-footer">
             Designed & Developed by <span>Vaibhav</span>
+            <br>Copyright ©️ 2026 Vaibhav Sable
         </div>
     </div>
 
@@ -101,34 +102,29 @@
             </button>
         </nav>
         <button onclick="app.openAddModal()" class="fab-btn" id="fabBtn">
-        <i class="bi bi-plus-lg"></i>
-    </button>
+            <i class="bi bi-plus-lg"></i>
+        </button>
     </div>
 
     <script src="script.js"></script>
     <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-            .then(() => console.log('Service Worker Registered'))
-            .catch((err) => console.log('SW Registration Failed', err));
-    }
-</script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js')
+                .then(() => console.log('Service Worker Registered'))
+                .catch((err) => console.log('SW Registration Failed', err));
+        }
+    </script>
     <div id="addModal" class="modal-overlay hidden">
         <div class="modal-content">
             <h3>Add Extra Class</h3>
-            
+
             <label>Select Subject</label>
             <select id="extraSub">
-                </select>
+            </select>
 
             <label>Type</label>
             <div class="type-selector">
-                <div class="type-opt active" onclick="app.setExtraType(this, 'LEC')">LEC</div>
-                <div class="type-opt" onclick="app.setExtraType(this, 'PRAC')">PRAC</div>
-                <div class="type-opt" onclick="app.setExtraType(this, 'TUT')">TUT</div>
             </div>
-
-            <label>Time (Optional)</label>
             <input type="time" id="extraTime" value="09:00" style="color-scheme: dark;">
 
             <div class="modal-actions">
