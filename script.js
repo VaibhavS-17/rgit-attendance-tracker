@@ -361,16 +361,26 @@ const RGIT_DATA = {
             }
         ],
         2: [ // TUE
+            // 1. Combined 2-Hour Practical for F1 (DS) & F3 (WS-II)
             {
                 t: "08:30",
-                e: "09:30",
+                e: "10:30",
                 map: {
                     "F1": "DS",
-                    "F2": "EC",
                     "F3": "WS-II"
                 },
                 rMap: {
                     "F3": "Workshop"
+                },
+                type: "PRAC"
+            },
+
+            // 2. Separate 1-Hour Practicals ONLY for F2 (EC & EP)
+            {
+                t: "08:30",
+                e: "09:30",
+                map: {
+                    "F2": "EC"
                 },
                 type: "PRAC"
             },
@@ -378,15 +388,12 @@ const RGIT_DATA = {
                 t: "09:30",
                 e: "10:30",
                 map: {
-                    "F1": "DS",
-                    "F2": "EP",
-                    "F3": "WS-II"
-                },
-                rMap: {
-                    "F3": "Workshop"
+                    "F2": "EP"
                 },
                 type: "PRAC"
             },
+
+            // 3. Rest of the day
             {
                 t: "10:30",
                 e: "11:30",
@@ -578,6 +585,14 @@ const app = {
     globalStats: {},
     extraClasses: {},
     currentExtraType: 'LEC',
+
+    // --- HELPER: Get correct local date string (YYYY-MM-DD) ---
+    getSafeDateKey: function(dateObj) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(dateObj.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    },
 
     init: function() {
         const u = localStorage.getItem('rgit_user') || sessionStorage.getItem('rgit_user');
@@ -994,7 +1009,8 @@ const app = {
         container.innerHTML = '';
 
         const dayIdx = date.getDay();
-        const dateKey = date.toISOString().split('T')[0];
+        // Use local date string to fix timezone bugs
+        const dateKey = this.getSafeDateKey(date);
 
         let todaysClasses = RGIT_DATA.schedule[dayIdx] ? [...RGIT_DATA.schedule[dayIdx]] : [];
         if (this.extraClasses[dateKey]) {
@@ -1028,27 +1044,42 @@ const app = {
 
             let code = slot.c;
             if (slot.map) code = slot.map[this.user.b];
+            if (!code) return; // Skip if slot not for this batch
 
             let room = slot.r || "";
             if (slot.rMap) room = slot.rMap[this.user.b];
             const roomHtml = room ? `<div class="room-loc"><i class="bi bi-geo-alt-fill"></i> ${room}</div>` : '';
 
-            // 1. Stats Key: Used to calculate totals (Must match Subject Name)
+            // 1. Stats Key: Grouping for Math (Subject + Type)
             const statsKey = `${code}_${slot.type}`;
 
-            // 2. Log Key: Used for the specific button on this specific day
-            // If it's an extra class, use its unique ID. If standard, use code+type.
-            const logKey = (slot.isExtra && slot.id) ? slot.id : statsKey;
+            // 2. HYBRID KEY LOGIC (The Fix)
+            const uniqueTime = slot.t.replace(':', '');
+            // New Format: Subject_Type_Time (e.g., EP_LEC_0830)
+            const modernKey = (slot.isExtra && slot.id) ? slot.id : `${statsKey}_${uniqueTime}`;
+            // Old Format: Subject_Type (e.g., EP_LEC)
+            const legacyKey = statsKey;
+
+            // Detect which key actually holds the data
+            let activeLogKey = modernKey; // Default to new format
+            let dailyStatus = null;
+
+            if (this.attendanceLog[dateKey]) {
+                if (this.attendanceLog[dateKey][modernKey]) {
+                    // Case A: Found data in NEW format
+                    dailyStatus = this.attendanceLog[dateKey][modernKey];
+                } else if (this.attendanceLog[dateKey][legacyKey]) {
+                    // Case B: Found data in OLD format (Fallback)
+                    dailyStatus = this.attendanceLog[dateKey][legacyKey];
+                    activeLogKey = legacyKey; // Bind button to old key so we can toggle it off
+                }
+            }
 
             const meta = RGIT_DATA.subjects[code] || {
                 name: code,
                 prof: ""
             };
 
-            // Check status using the LOG KEY (Specific)
-            const dailyStatus = (this.attendanceLog[dateKey] && this.attendanceLog[dateKey][logKey]) || null;
-
-            // Calculate stats using the STATS KEY (Grouped)
             if (!this.globalStats[statsKey]) this.globalStats[statsKey] = {
                 p: 0,
                 t: 0
@@ -1060,7 +1091,6 @@ const app = {
             if (pct >= 75) ringColor = '#3fb950';
             else if (pct >= 60) ringColor = '#d29922';
 
-            // --- 1. PREPARE DELETE BUTTON ---
             const deleteBtn = slot.isExtra ?
                 `<button class="trash-btn" onclick="app.deleteExtraClass('${dateKey}', '${slot.id}')"><i class="bi bi-trash"></i></button>` :
                 '';
@@ -1090,9 +1120,9 @@ const app = {
                         </div>
 
                         <div class="btn-grid">
-                            <button class="act-btn can ${dailyStatus==='C'?'active':''}" onclick="app.toggle('${dateKey}', '${logKey}', '${statsKey}', 'C')"><i class="bi bi-slash-circle"></i> Can</button>
-                            <button class="act-btn abs ${dailyStatus==='A'?'active':''}" onclick="app.toggle('${dateKey}', '${logKey}', '${statsKey}', 'A')"><i class="bi bi-x-circle"></i> Abs</button>
-                            <button class="act-btn pre ${dailyStatus==='P'?'active':''}" onclick="app.toggle('${dateKey}', '${logKey}', '${statsKey}', 'P')"><i class="bi bi-check-circle"></i> Pre</button>
+                            <button class="act-btn can ${dailyStatus==='C'?'active':''}" onclick="app.toggle('${dateKey}', '${activeLogKey}', '${statsKey}', 'C')"><i class="bi bi-slash-circle"></i> Can</button>
+                            <button class="act-btn abs ${dailyStatus==='A'?'active':''}" onclick="app.toggle('${dateKey}', '${activeLogKey}', '${statsKey}', 'A')"><i class="bi bi-x-circle"></i> Abs</button>
+                            <button class="act-btn pre ${dailyStatus==='P'?'active':''}" onclick="app.toggle('${dateKey}', '${activeLogKey}', '${statsKey}', 'P')"><i class="bi bi-check-circle"></i> Pre</button>
                         </div>
                     </div>
                 </div>
@@ -1311,9 +1341,10 @@ const app = {
     saveExtraClass: function() {
         const code = document.getElementById('extraSub').value;
         const time = document.getElementById('extraTime').value;
-        const dateKey = this.selectedDate.toISOString().split('T')[0];
 
-        // CHANGED: Added 'id' field using Date.now() to ensure it is unique
+        // FIX: Use local date instead of UTC
+        const dateKey = this.getSafeDateKey(this.selectedDate);
+
         const newClass = {
             id: `ex_${Date.now()}`,
             t: time,
@@ -1330,6 +1361,7 @@ const app = {
         document.getElementById('addModal').classList.add('hidden');
         this.loadDay(this.selectedDate);
     },
+
     // --- IMPROVED: Delete without Page Reload ---
     deleteExtraClass: function(dateKey, classId) {
         if (confirm('Delete this extra class?')) {
@@ -1357,52 +1389,42 @@ const app = {
 
     // --- NEW: True Stats Recalculation (Self-Healing) ---
     recalculateAllStats: function() {
-        // 1. Reset Stats
         const newStats = {};
 
-        // 2. Iterate through every date in the log
         Object.keys(this.attendanceLog).forEach(date => {
             const dayLog = this.attendanceLog[date];
 
             Object.keys(dayLog).forEach(key => {
                 const status = dayLog[key];
+                let subjectKey = key;
 
-                // Determine Subject Code & Type from the Key
-                let subjectKey = key; // Default for normal classes (e.g., "EP_LEC")
-
-                // If it's an extra class (starts with 'ex_'), we must find its details
+                // 1. Extra Class (ex_...)
                 if (key.startsWith('ex_')) {
-                    // Search in extraClasses for this specific ID
-                    let found = false;
                     const daysExtras = this.extraClasses[date] || [];
                     const extraClass = daysExtras.find(e => e.id === key);
-
-                    if (extraClass) {
-                        subjectKey = `${extraClass.c}_${extraClass.type}`;
-                        found = true;
-                    }
-
-                    if (!found) return;
+                    if (extraClass) subjectKey = `${extraClass.c}_${extraClass.type}`;
+                    else return;
                 }
+                // 2. Modern Key (Suffix _0830) -> Strip it to get subject
+                else if (key.match(/_\d{4}$/)) {
+                    subjectKey = key.replace(/_\d{4}$/, '');
+                }
+                // 3. Legacy Key (No Suffix) -> Use as is
 
-                // Initialize if not exists
                 if (!newStats[subjectKey]) newStats[subjectKey] = {
                     p: 0,
                     t: 0
                 };
 
-                // Update Counts
                 if (status === 'P') {
                     newStats[subjectKey].p++;
                     newStats[subjectKey].t++;
                 } else if (status === 'A') {
                     newStats[subjectKey].t++;
                 }
-                // 'C' (Cancelled) does not increase Total or Present
             });
         });
 
-        // 3. Update State & Storage
         this.globalStats = newStats;
         localStorage.setItem(`stats_${this.user.id}`, JSON.stringify(this.globalStats));
     },
