@@ -423,12 +423,21 @@ const RGIT_DATA = {
             }
         ],
         3: [ // WED
+            // 1. Combined 2-Hour Practical for F2 (DS)
+            {
+                t: "08:30",
+                e: "10:30",
+                map: {
+                    "F2": "DS",
+                },
+                type: "PRAC"
+            },
+            // 2. Separate 1-Hour Practicals ONLY for F1 & F2 (EC & EP)
             {
                 t: "08:30",
                 e: "09:30",
                 map: {
                     "F1": "EP",
-                    "F2": "DS",
                     "F3": "EC"
                 },
                 type: "PRAC"
@@ -438,7 +447,6 @@ const RGIT_DATA = {
                 e: "10:30",
                 map: {
                     "F1": "EC",
-                    "F2": "DS",
                     "F3": "EP"
                 },
                 type: "PRAC"
