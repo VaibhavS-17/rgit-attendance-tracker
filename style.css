@@ -831,6 +831,74 @@ body {
     background: rgba(218, 54, 51, 0.1);
 }
 
+/* --- BULK ACTION BUTTONS --- */
+.bulk-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 Buttons equal width */
+    gap: 10px;
+    margin-bottom: 25px;
+    padding: 4px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.bulk-btn {
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 0;
+    color: var(--text-muted);
+    font-size: 1.2rem; /* Icon size */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.bulk-btn span {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.bulk-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+}
+
+/* Specific Colors on Hover/Active */
+.bulk-btn.btn-clear:active { color: #f0f6fc; background: #30363d; }
+.bulk-btn.btn-cancel:active { color: #d29922; background: rgba(210, 153, 34, 0.15); }
+.bulk-btn.btn-absent:active { color: var(--red-text); background: var(--red-bg); }
+.bulk-btn.btn-present:active { color: var(--green-text); background: var(--green-bg); }
+
+/* --- COMPACT STATS CARD --- */
+/* Target only the card inside the stats container */
+#statsCard .class-card {
+    padding: 15px 20px !important; /* Reduced vertical padding */
+}
+
+/* Optional: Make the big percentage slightly smaller to fit better */
+#overallPct {
+    font-size: 1.8rem !important; /* Reduced from 2.2rem */
+    line-height: 1.1 !important;
+}
+
+/* --- BULK ACTION HEADER --- */
+.bulk-header {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px; /* Space between text and buttons */
+    margin-left: 6px;   /* Align with the first button */
+    opacity: 0.8;
+}
+
 /* Improved mobile interactions */
 @media (max-width: 768px) {
     /* Better touch targets */

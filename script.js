@@ -842,6 +842,24 @@ const app = {
             </div>`;
             return;
         }
+        
+                // --- NEW CODE STARTS HERE ---
+        // Inject Bulk Actions with Label
+        container.innerHTML += `
+        <div class="bulk-header">Mark All</div>  <div class="bulk-actions">
+            <button class="bulk-btn btn-clear" onclick="app.bulkAction('CLEAR')">
+                <i class="bi bi-eraser"></i><span>Clear</span>
+            </button>
+            <button class="bulk-btn btn-cancel" onclick="app.bulkAction('C')">
+                <i class="bi bi-slash-circle"></i><span>Cancel</span>
+            </button>
+            <button class="bulk-btn btn-absent" onclick="app.bulkAction('A')">
+                <i class="bi bi-x-circle"></i><span>Absent</span>
+            </button>
+            <button class="bulk-btn btn-present" onclick="app.bulkAction('P')">
+                <i class="bi bi-check-circle"></i><span>Present</span>
+            </button>
+        </div>`;
 
         todaysClasses.forEach(slot => {
             if (slot.type === 'BREAK') {
@@ -980,6 +998,62 @@ const app = {
 
         this.updateOverall();
         this.loadDay(this.selectedDate);
+    },
+    
+        bulkAction: function(action) {
+        this.vibrate();
+        
+        // 1. Get classes for the current day
+        const dateKey = this.getSafeDateKey(this.selectedDate);
+        const dayIdx = this.selectedDate.getDay();
+        const div = this.getUserDiv();
+        const schedule = RGIT_DATA.schedules[div] || {};
+        
+        let todaysClasses = schedule[dayIdx] ? [...schedule[dayIdx]] : [];
+        if (this.extraClasses[dateKey]) {
+            todaysClasses = [...todaysClasses, ...this.extraClasses[dateKey]];
+        }
+
+        if (!this.attendanceLog[dateKey]) this.attendanceLog[dateKey] = {};
+
+        // 2. Loop through classes and apply action
+        todaysClasses.forEach(slot => {
+            if (slot.type === 'BREAK') return; // Skip recess
+
+            // Logic to determine the correct Key (Matches loadDay logic)
+            let code = slot.c;
+            if (slot.map) code = slot.map[this.user.b];
+            if (!code) return;
+
+            const statsKey = `${code}_${slot.type}`;
+            const uniqueTime = slot.t.replace(':', '');
+            // Key generation logic
+            const modernKey = (slot.isExtra && slot.id) ? slot.id : `${statsKey}_${uniqueTime}`;
+
+            if (action === 'CLEAR') {
+                // Remove entry
+                delete this.attendanceLog[dateKey][modernKey];
+                // Also try deleting legacy key just in case
+                delete this.attendanceLog[dateKey][statsKey];
+            } else {
+                // Set Status (P, A, or C)
+                this.attendanceLog[dateKey][modernKey] = action;
+            }
+        });
+
+        // 3. Save and Update
+        localStorage.setItem(`log_${this.user.id}`, JSON.stringify(this.attendanceLog));
+        
+        this.recalculateAllStats();
+        this.updateOverall();
+        this.loadDay(this.selectedDate);
+        
+        // Optional: Show toast feedback
+        let msg = "Attendance Cleared";
+        if(action === 'P') msg = "Marked All Present";
+        if(action === 'A') msg = "Marked All Absent";
+        if(action === 'C') msg = "Marked All Cancelled";
+        this.showToast(msg, 'success');
     },
 
     renderSubjects: function() {
