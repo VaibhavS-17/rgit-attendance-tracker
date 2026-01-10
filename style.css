@@ -300,7 +300,17 @@ body {
     transition: all 0.3s ease;
 }
 .nav-item i { font-size: 1.3rem; margin-bottom: 2px; transition: transform 0.3s ease; }
-.nav-item.active { color: var(--accent); }
+
+/* FIXED: Explicitly blue and added stronger glow for active state */
+.nav-item.active { 
+    color: var(--accent) !important;
+}
+
+.nav-item.active i {
+    text-shadow: 0 0 20px rgba(47, 129, 247, 0.8);
+    transform: scale(1.1);
+}
+
 .nav-item:hover { color: var(--accent); transform: translateY(-2px); }
 .nav-item:hover i { transform: scale(1.1); }
 

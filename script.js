@@ -697,10 +697,14 @@ const app = {
     },
 
     switchTab: function(tabName) {
-        document.getElementById('navDash').classList.toggle('active', tabName === 'dashboard');
-        document.getElementById('navSub').classList.toggle('active', tabName === 'subjects');
+        const dashBtn = document.getElementById('navDash');
+        const subBtn = document.getElementById('navSub');
+        const dashIcon = dashBtn.querySelector('i');
+        const subIcon = subBtn.querySelector('i');
 
-        // Toggle elements based on the tab
+        dashBtn.classList.toggle('active', tabName === 'dashboard');
+        subBtn.classList.toggle('active', tabName === 'subjects');
+
         if (tabName === 'dashboard') {
             document.getElementById('timelineList').classList.remove('hidden');
             document.getElementById('statsCard').classList.remove('hidden');
@@ -712,6 +716,13 @@ const app = {
 
             // Add the scroll hint ONLY when in dashboard
             this.addScrollHint();
+
+            // FIXED: Swap icons to show active state
+            dashIcon.classList.remove('bi-grid');
+            dashIcon.classList.add('bi-grid-fill');
+            
+            subIcon.classList.remove('bi-journal-bookmark-fill');
+            subIcon.classList.add('bi-journal-bookmark');
 
             const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             document.getElementById('pageTitle').innerText = months[this.selectedDate.getMonth()];
@@ -726,6 +737,13 @@ const app = {
 
             // Remove scroll hint to be safe
             this.removeScrollHint();
+
+            // FIXED: Swap icons to show active state
+            dashIcon.classList.remove('bi-grid-fill');
+            dashIcon.classList.add('bi-grid');
+            
+            subIcon.classList.remove('bi-journal-bookmark');
+            subIcon.classList.add('bi-journal-bookmark-fill');
 
             document.getElementById('pageTitle').innerText = "Analysis";
             this.renderSubjects();
