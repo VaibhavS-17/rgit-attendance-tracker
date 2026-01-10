@@ -232,12 +232,12 @@ const RGIT_DATA = {
                 },
                 { t: "10:30", e: "11:30", 
                   map: { "A1": "EP", "A3": "EC" }, 
-                  rMap: { "A1":"C25", "A3":"C21" },
+                  rMap: { "A1":"C-25", "A3":"C-21" },
                   type: "PRAC" 
                 },
                 { t: "11:30", e: "12:30", 
                   map: { "A1": "EC", "A3": "EP" }, 
-                  rMap: { "A1":"C21", "A3":"C25" },
+                  rMap: { "A1":"C-21", "A3":"C-25" },
                   type: "PRAC" 
                 },
                 { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
@@ -266,12 +266,12 @@ const RGIT_DATA = {
                 },
                 { t: "08:30", e: "09:30",
                   map: { "A2": "EC", },
-                  rMap: { "A2":"C21", },
+                  rMap: { "A2":"C-21", },
                   type: "PRAC"
                 },
                 { t: "09:30", e: "10:30",
                   map: { "A2": "EP", },
-                  rMap: { "A2":"C25", },
+                  rMap: { "A2":"C-25", },
                   type: "PRAC"
                 },
                 { t: "10:30", e: "11:30", c: "SS&CS", type: "LEC", r: "A-26" },
@@ -307,8 +307,8 @@ const RGIT_DATA = {
             ],
             2: [ // TUE
                 { t: "08:30", e: "10:30", map: { "F1": "DS", "F3": "WS-II" }, rMap: { "F1": "DS Lab", "F3": "Workshop" }, type: "PRAC" },
-                { t: "08:30", e: "09:30", map: { "F2": "EC" }, rMap: { "F2": "C21" }, type: "PRAC" },
-                { t: "09:30", e: "10:30", map: { "F2": "EP" }, rMap: { "F2": "C25" }, type: "PRAC" },
+                { t: "08:30", e: "09:30", map: { "F2": "EC" }, rMap: { "F2": "C-21" }, type: "PRAC" },
+                { t: "09:30", e: "10:30", map: { "F2": "EP" }, rMap: { "F2": "C-25" }, type: "PRAC" },
                 { t: "10:30", e: "11:30", c: "DS", type: "LEC", r: "B-22" },
                 { t: "11:30", e: "12:30", c: "PP", type: "LEC", r: "B-22" },
                 { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
@@ -316,8 +316,8 @@ const RGIT_DATA = {
             ],
             3: [ // WED
                 { t: "08:30", e: "10:30", map: { "F2": "DS" }, rMap: { "F2": "DS Lab" }, type: "PRAC" },
-                { t: "08:30", e: "09:30", map: { "F1": "EP", "F3": "EC" }, rMap: { "F1": "C25", "F3": "C21" }, type: "PRAC" },
-                { t: "09:30", e: "10:30", map: { "F1": "EC", "F3": "EP" }, rMap: { "F1": "C21", "F3": "C25" }, type: "PRAC" },
+                { t: "08:30", e: "09:30", map: { "F1": "EP", "F3": "EC" }, rMap: { "F1": "C-25", "F3": "C-21" }, type: "PRAC" },
+                { t: "09:30", e: "10:30", map: { "F1": "EC", "F3": "EP" }, rMap: { "F1": "C-21", "F3": "C-25" }, type: "PRAC" },
                 { t: "10:30", e: "12:30", c: "IKS", type: "PRAC", r: "A-26" },
                 { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
                 { t: "13:15", e: "14:15", c: "EG", type: "LEC", r: "C-22" },
