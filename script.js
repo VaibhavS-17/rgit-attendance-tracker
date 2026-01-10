@@ -700,11 +700,18 @@ const app = {
         document.getElementById('navDash').classList.toggle('active', tabName === 'dashboard');
         document.getElementById('navSub').classList.toggle('active', tabName === 'subjects');
 
+        // Toggle elements based on the tab
         if (tabName === 'dashboard') {
             document.getElementById('timelineList').classList.remove('hidden');
             document.getElementById('statsCard').classList.remove('hidden');
             document.getElementById('subjectList').classList.add('hidden');
-            document.getElementById('dateStrip').style.display = 'flex';
+            
+            // Show Date Strip Wrapper (which contains the strip + the hint)
+            const wrapper = document.getElementById('dateWrapper');
+            if (wrapper) wrapper.style.display = 'block';
+
+            // Add the scroll hint ONLY when in dashboard
+            this.addScrollHint();
 
             const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             document.getElementById('pageTitle').innerText = months[this.selectedDate.getMonth()];
@@ -712,7 +719,14 @@ const app = {
             document.getElementById('timelineList').classList.add('hidden');
             document.getElementById('statsCard').classList.add('hidden');
             document.getElementById('subjectList').classList.remove('hidden');
-            document.getElementById('dateStrip').style.display = 'none';
+            
+            // Hide Date Strip Wrapper
+            const wrapper = document.getElementById('dateWrapper');
+            if (wrapper) wrapper.style.display = 'none';
+
+            // Remove scroll hint to be safe
+            this.removeScrollHint();
+
             document.getElementById('pageTitle').innerText = "Analysis";
             this.renderSubjects();
         }
@@ -721,8 +735,34 @@ const app = {
         if (fab) fab.style.display = tabName === 'dashboard' ? 'flex' : 'none';
     },
 
+    // NEW: Function to inject the scroll hint
+    addScrollHint: function() {
+        const wrapper = document.getElementById('dateWrapper');
+        if (!wrapper) return;
+
+        // Check if hint already exists to avoid duplicates
+        if (!wrapper.querySelector('.scroll-hint')) {
+            const hint = document.createElement('div');
+            hint.className = 'scroll-hint';
+            hint.innerHTML = '<i class="bi bi-chevron-compact-right"></i>';
+            wrapper.appendChild(hint);
+        }
+    },
+
+    // NEW: Function to remove the scroll hint
+    removeScrollHint: function() {
+        const wrapper = document.getElementById('dateWrapper');
+        if (!wrapper) return;
+        const hint = wrapper.querySelector('.scroll-hint');
+        if (hint) {
+            hint.remove();
+        }
+    },
+
     renderDateStrip: function() {
         const strip = document.getElementById('dateStrip');
+        if (!strip) return;
+        
         strip.innerHTML = '';
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
