@@ -21,10 +21,10 @@
         <div class="login-container">
             <div class="logo-emoji">🏫</div>
             <h1>RGIT Tracker</h1>
-            <p>Computer Engineering (Div F)</p>
+            <p>Computer Engineering</p>
 
             <div class="input-group">
-                <input type="number" id="rollInput" placeholder="Enter Roll Number (e.g. 616)">
+                <input type="number" id="rollInput" placeholder="Enter Roll Number (e.g. 101/616)">
             </div>
             <div class="remember-box">
                 <label class="custom-checkbox">
@@ -41,7 +41,8 @@
                 Your attendance is stored locally on this device. You cannot edit others' data.
             </div>
 
-            <div id="errorMsg" class="error-msg"></div>
+            <div id="errorMsg" class="error-msg" role="alert" aria-live="polite"></div>
+            <div id="successMsg" class="success-msg hidden" role="status" aria-live="polite"></div>
         </div>
         <div class="app-footer">
             Designed & Developed by <span>Vaibhav</span>
@@ -106,6 +107,9 @@
         </button>
     </div>
 
+    <!-- Toast container for notifications -->
+    <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
     <script src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
@@ -113,6 +117,13 @@
                 .then(() => console.log('Service Worker Registered'))
                 .catch((err) => console.log('SW Registration Failed', err));
         }
+
+        // Initialize keyboard navigation when app loads
+        document.addEventListener('DOMContentLoaded', () => {
+            if (app && app.initKeyboardNavigation) {
+                app.initKeyboardNavigation();
+            }
+        });
     </script>
     <div id="addModal" class="modal-overlay hidden">
         <div class="modal-content">
@@ -120,16 +131,38 @@
 
             <label>Select Subject</label>
             <select id="extraSub">
-            </select>
+                </select>
 
             <label>Type</label>
             <div class="type-selector">
             </div>
-            <input type="time" id="extraTime" value="09:00" style="color-scheme: dark;">
+
+            <div style="display: flex; gap: 12px;">
+                <div style="flex: 1;">
+                    <label>Start Time</label>
+                    <input type="time" id="extraTime" value="09:00" style="color-scheme: dark;">
+                </div>
+                <div style="flex: 1;">
+                    <label>End Time</label>
+                    <input type="time" id="extraEndTime" value="10:00" style="color-scheme: dark;">
+                </div>
+            </div>
 
             <div class="modal-actions">
                 <button onclick="document.getElementById('addModal').classList.add('hidden')" class="btn-cancel">Cancel</button>
                 <button onclick="app.saveExtraClass()" class="btn-save">Add Class</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 id="confirmTitle">Confirm Action</h3>
+            <p id="confirmMessage" style="margin: 20px 0; color: var(--text-main); line-height: 1.5;"></p>
+            <div class="modal-actions">
+                <button onclick="app.closeConfirmModal()" class="btn-cancel">Cancel</button>
+                <button onclick="app.confirmAction()" class="btn-save" id="confirmBtn">Confirm</button>
             </div>
         </div>
     </div>

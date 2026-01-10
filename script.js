@@ -11,578 +11,337 @@ window.addEventListener('beforeinstallprompt', (e) => {
 // --- 1. DATA ---
 const RGIT_DATA = {
     students: {
-        "601": {
-            n: "NANDAL AKSHAYA",
-            b: "F1"
-        },
-        "602": {
-            n: "CHOHAN MOHAMMED",
-            b: "F1"
-        },
-        "603": {
-            n: "PARAB GAYATRI",
-            b: "F1"
-        },
-        "604": {
-            n: "PARAB RUTUJA",
-            b: "F1"
-        },
-        "605": {
-            n: "PATIL ARYA",
-            b: "F1"
-        },
-        "606": {
-            n: "PATIL GAURAV",
-            b: "F1"
-        },
-        "607": {
-            n: "PATIL HARIOM",
-            b: "F1"
-        },
-        "608": {
-            n: "PATIL KRUPA",
-            b: "F1"
-        },
-        "609": {
-            n: "PATIL MIRA",
-            b: "F1"
-        },
-        "610": {
-            n: "PATIL PRATIK",
-            b: "F1"
-        },
-        "611": {
-            n: "PATIL PRAPTI",
-            b: "F1"
-        },
-        "612": {
-            n: "PATIL TEJASVEE",
-            b: "F1"
-        },
-        "613": {
-            n: "PAWAR SOHAM",
-            b: "F1"
-        },
-        "614": {
-            n: "PIMPLE RAHI",
-            b: "F1"
-        },
-        "615": {
-            n: "PURADKAR VEDANT",
-            b: "F1"
-        },
-        "616": {
-            n: "SABLE VAIBHAV",
-            b: "F1"
-        },
-        "617": {
-            n: "SAHARE ADITYA",
-            b: "F1"
-        },
-        "618": {
-            n: "SANGALE DNYANESHWAR",
-            b: "F1"
-        },
-        "619": {
-            n: "SAWANT ATHARVA",
-            b: "F1"
-        },
-        "620": {
-            n: "CHOUDHARI MADHURA",
-            b: "F1"
-        },
-        "621": {
-            n: "SAYYED KAUSARBANO",
-            b: "F1"
-        },
-        "622": {
-            n: "SHAIKH NILOFER",
-            b: "F1"
-        },
-        "623": {
-            n: "SHARMA BHARATI",
-            b: "F1"
-        },
-        "624": {
-            n: "SHELAR AYUSH",
-            b: "F2"
-        },
-        "625": {
-            n: "SHELKE ARPITA",
-            b: "F2"
-        },
-        "626": {
-            n: "SHELKE SHRUTI",
-            b: "F2"
-        },
-        "627": {
-            n: "SINGH ATHARVA",
-            b: "F2"
-        },
-        "628": {
-            n: "SINGH KRITHARTH",
-            b: "F2"
-        },
-        "629": {
-            n: "SINGH SAURABH",
-            b: "F2"
-        },
-        "630": {
-            n: "SUPUGADE PRANAV",
-            b: "F2"
-        },
-        "631": {
-            n: "SUTAR PARTH",
-            b: "F2"
-        },
-        "632": {
-            n: "TADASE OM",
-            b: "F2"
-        },
-        "633": {
-            n: "DEVRUSHI SIDDHANT",
-            b: "F2"
-        },
-        "634": {
-            n: "THAKUR RUTUJA",
-            b: "F2"
-        },
-        "635": {
-            n: "THOBHANI ARYAN",
-            b: "F2"
-        },
-        "636": {
-            n: "TIWARI RISHAV",
-            b: "F2"
-        },
-        "637": {
-            n: "TOSHNIWAL MADHAV",
-            b: "F2"
-        },
-        "638": {
-            n: "TRIVEDI ANANT",
-            b: "F2"
-        },
-        "639": {
-            n: "TUMBADA JAGRUTI",
-            b: "F2"
-        },
-        "640": {
-            n: "VARMA HARSHIT",
-            b: "F2"
-        },
-        "641": {
-            n: "VHATTE VIVEKANAND",
-            b: "F2"
-        },
-        "642": {
-            n: "KHEDEKAR ARYAN",
-            b: "F2"
-        },
-        "643": {
-            n: "MASURKAR ATHARVA",
-            b: "F2"
-        },
-        "644": {
-            n: "MHATRE KANISHKA",
-            b: "F2"
-        },
-        "645": {
-            n: "MISHRA PRIYAL",
-            b: "F2"
-        },
-        "646": {
-            n: "NAGAR SURUCHI",
-            b: "F2"
-        },
-        "647": {
-            n: "PADHI SHUBAN",
-            b: "F3"
-        },
-        "648": {
-            n: "PANDAWVEER SRUSHTI",
-            b: "F3"
-        },
-        "649": {
-            n: "PATEL ARYA",
-            b: "F3"
-        },
-        "650": {
-            n: "PATIL CHINMAY",
-            b: "F3"
-        },
-        "651": {
-            n: "RAJPUROHIT RAMSINGH",
-            b: "F3"
-        },
-        "652": {
-            n: "SALIAN RUSHIL",
-            b: "F3"
-        },
-        "653": {
-            n: "SANKHE ARYAN",
-            b: "F3"
-        },
-        "654": {
-            n: "SANKPAL ARYAN",
-            b: "F3"
-        },
-        "655": {
-            n: "SAWANT SARVESH",
-            b: "F3"
-        },
-        "656": {
-            n: "SHARMA HARDIK",
-            b: "F3"
-        },
-        "657": {
-            n: "SHARMA MANAV",
-            b: "F3"
-        },
-        "658": {
-            n: "SOLUNKE SHREYAS",
-            b: "F3"
-        },
-        "659": {
-            n: "SRIVASTAVA ROHIT",
-            b: "F3"
-        },
-        "660": {
-            n: "VAIDIKAR GANGOTRI",
-            b: "F3"
-        }
+        // --- DIV A (101 - 161) ---
+        "101": { n: "ADAGA NITESH", b: "A1" },
+        "102": { n: "AJGAONKAR GAURANG", b: "A1" },
+        "103": { n: "ANSARI MOHAMMAD HAMZA", b: "A1" },
+        "104": { n: "AZHARI AFRA", b: "A1" },
+        "105": { n: "BARDE KEYAA", b: "A1" },
+        "106": { n: "BHURE SUYASH", b: "A1" },
+        "107": { n: "BHAGAT ADITYA", b: "A1" },
+        "108": { n: "BHARANKAR SHREEJEET", b: "A1" },
+        "109": { n: "BILLAVA AMIT", b: "A1" },
+        "110": { n: "BOKADE ABHIJIT", b: "A1" },
+        "111": { n: "BONDRE VAISHNAVI", b: "A1" },
+        "112": { n: "CHAUHAN ASHISH", b: "A1" },
+        "113": { n: "CHIPAT ARYAN", b: "A1" },
+        "114": { n: "CHOGALE KRISHNA", b: "A1" },
+        "115": { n: "CHOPKAR ASHLESH", b: "A1" },
+        "116": { n: "DAKHNI MOHAMMAD", b: "A1" },
+        "117": { n: "DEOLIA SPARSH", b: "A1" },
+        "118": { n: "DHANAWADE SHUBHAM", b: "A1" },
+        "119": { n: "DHUMAL PRAJYOT", b: "A1" },
+        "120": { n: "DHUMAL TANISH", b: "A1" },
+        "121": { n: "DUBEY ANSH", b: "A1" },
+        "122": { n: "FAROOQUI MOHAMMED", b: "A1" },
+        "123": { n: "GAIKWAD ADWAIT", b: "A1" },
+        "124": { n: "GHULE PRIYANKA", b: "A2" },
+        "125": { n: "HAIDER MOHAMMED", b: "A2" },
+        "126": { n: "GIJE AAYUSH", b: "A2" },
+        "127": { n: "GOHANE PRADYUAM", b: "A2" },
+        "128": { n: "GUJJETI VIDYA", b: "A2" },
+        "129": { n: "GUPTA JANHAVI", b: "A2" },
+        "130": { n: "HARYAN ANANT", b: "A2" },
+        "131": { n: "JAISWAL SURYANSHI", b: "A2" },
+        "132": { n: "JAISWAL PRINCE", b: "A2" },
+        "133": { n: "JAITAPKAR OM", b: "A2" },
+        "134": { n: "JAMBEKAR ATHARV", b: "A2" },
+        "135": { n: "JHA SANDIP", b: "A2" },
+        "136": { n: "KAMBLE PRACHI", b: "A2" },
+        "137": { n: "KARANDE ADITYA", b: "A2" },
+        "138": { n: "KENI MANAS", b: "A2" },
+        "139": { n: "KHAN MAWIYAH", b: "A2" },
+        "140": { n: "KHATATE PIYUSH", b: "A2" },
+        "141": { n: "KOKANE PRANAV", b: "A2" },
+        "142": { n: "KHAN MOHD AALIM", b: "A2" },
+        "143": { n: "KOUNDAR VISURUTHIKKUMAR", b: "A2" },
+        "144": { n: "KSHIRSAGAR GAURAV", b: "A2" },
+        "145": { n: "KUDEKAR TANISH", b: "A2" },
+        "146": { n: "KUMAR TARUN", b: "A2" },
+        "147": { n: "KUMAVAT DEVESH", b: "A3" },
+        "148": { n: "LAGADE YASH", b: "A3" },
+        "149": { n: "MANANI PRATHAM", b: "A3" },
+        "150": { n: "MANKAR TANISH", b: "A3" },
+        "151": { n: "MATKAR TANISH", b: "A3" },
+        "152": { n: "PANDEY HIMESH", b: "A3" },
+        "153": { n: "METHWALE CHAITANYA", b: "A3" },
+        "154": { n: "MORE ADITYA", b: "A3" },
+        "155": { n: "MUNGASE PAYAL", b: "A3" },
+        "156": { n: "NAGMOTI TANMAY", b: "A3" },
+        "157": { n: "TARAFDER MANYA", b: "A3" },
+        "158": { n: "NAIK ROHIT", b: "A3" },
+        "159": { n: "ALTAMASH MOHAMMED", b: "A3" },
+        "160": { n: "AMBHIRE ISHAN", b: "A3" },
+        "161": { n: "DESAI SHAIVI", b: "A3" },
+
+        // --- DIV F (601 - 660) ---
+        "601": { n: "NANDAL AKSHAYA", b: "F1" },
+        "602": { n: "CHOHAN MOHAMMED", b: "F1" },
+        "603": { n: "PARAB GAYATRI", b: "F1" },
+        "604": { n: "PARAB RUTUJA", b: "F1" },
+        "605": { n: "PATIL ARYA", b: "F1" },
+        "606": { n: "PATIL GAURAV", b: "F1" },
+        "607": { n: "PATIL HARIOM", b: "F1" },
+        "608": { n: "PATIL KRUPA", b: "F1" },
+        "609": { n: "PATIL MIRA", b: "F1" },
+        "610": { n: "PATIL PRATIK", b: "F1" },
+        "611": { n: "PATIL PRAPTI", b: "F1" },
+        "612": { n: "PATIL TEJASVEE", b: "F1" },
+        "613": { n: "PAWAR SOHAM", b: "F1" },
+        "614": { n: "PIMPLE RAHI", b: "F1" },
+        "615": { n: "PURADKAR VEDANT", b: "F1" },
+        "616": { n: "SABLE VAIBHAV", b: "F1" },
+        "617": { n: "SAHARE ADITYA", b: "F1" },
+        "618": { n: "SANGALE DNYANESHWAR", b: "F1" },
+        "619": { n: "SAWANT ATHARVA", b: "F1" },
+        "620": { n: "CHOUDHARI MADHURA", b: "F1" },
+        "621": { n: "SAYYED KAUSARBANO", b: "F1" },
+        "622": { n: "SHAIKH NILOFER", b: "F1" },
+        "623": { n: "SHARMA BHARATI", b: "F1" },
+        "624": { n: "SHELAR AYUSH", b: "F2" },
+        "625": { n: "SHELKE ARPITA", b: "F2" },
+        "626": { n: "SHELKE SHRUTI", b: "F2" },
+        "627": { n: "SINGH ATHARVA", b: "F2" },
+        "628": { n: "SINGH KRITHARTH", b: "F2" },
+        "629": { n: "SINGH SAURABH", b: "F2" },
+        "630": { n: "SUPUGADE PRANAV", b: "F2" },
+        "631": { n: "SUTAR PARTH", b: "F2" },
+        "632": { n: "TADASE OM", b: "F2" },
+        "633": { n: "DEVRUSHI SIDDHANT", b: "F2" },
+        "634": { n: "THAKUR RUTUJA", b: "F2" },
+        "635": { n: "THOBHANI ARYAN", b: "F2" },
+        "636": { n: "TIWARI RISHAV", b: "F2" },
+        "637": { n: "TOSHNIWAL MADHAV", b: "F2" },
+        "638": { n: "TRIVEDI ANANT", b: "F2" },
+        "639": { n: "TUMBADA JAGRUTI", b: "F2" },
+        "640": { n: "VARMA HARSHIT", b: "F2" },
+        "641": { n: "VHATTE VIVEKANAND", b: "F2" },
+        "642": { n: "KHEDEKAR ARYAN", b: "F2" },
+        "643": { n: "MASURKAR ATHARVA", b: "F2" },
+        "644": { n: "MHATRE KANISHKA", b: "F2" },
+        "645": { n: "MISHRA PRIYAL", b: "F2" },
+        "646": { n: "NAGAR SURUCHI", b: "F2" },
+        "647": { n: "PADHI SHUBAN", b: "F3" },
+        "648": { n: "PANDAWVEER SRUSHTI", b: "F3" },
+        "649": { n: "PATEL ARYA", b: "F3" },
+        "650": { n: "PATIL CHINMAY", b: "F3" },
+        "651": { n: "RAJPUROHIT RAMSINGH", b: "F3" },
+        "652": { n: "SALIAN RUSHIL", b: "F3" },
+        "653": { n: "SANKHE ARYAN", b: "F3" },
+        "654": { n: "SANKPAL ARYAN", b: "F3" },
+        "655": { n: "SAWANT SARVESH", b: "F3" },
+        "656": { n: "SHARMA HARDIK", b: "F3" },
+        "657": { n: "SHARMA MANAV", b: "F3" },
+        "658": { n: "SOLUNKE SHREYAS", b: "F3" },
+        "659": { n: "SRIVASTAVA ROHIT", b: "F3" },
+        "660": { n: "VAIDIKAR GANGOTRI", b: "F3" }
     },
 
     subjects: {
         "EP": {
             name: "Elective Physics",
-            prof: "Dr. Y.S. Patil",
+            prof: {
+                "A": "Dr. K.G. Chaudhari",
+                "F": "Dr. Y.S. Patil"
+            },
             types: ["LEC", "PRAC"]
         },
         "EC": {
             name: "Elective Chemistry",
-            prof: "Dr. Pallavi S.",
+            prof: {
+                "A": "Dr. Neeta Kapase",
+                "F": "Dr. Pallavi S. Dikkar"
+            },
             types: ["LEC", "PRAC"]
         },
         "IKS": {
             name: "Indian Knowledge Sys",
-            prof: "Prof. D.K. Chakradev",
+            prof: {
+                "A": "Prof. D.K. Chakradev",
+                "F": "Prof. D.K. Chakradev"
+            },
             types: ["LEC", "PRAC"]
         },
         "PP": {
             name: "Python Programming",
-            prof: "Prof. Deepak Gaikar",
+            prof: {
+                "A": "Prof. Deepak Gaikar",
+                "F": "Prof. Deepak Gaikar"
+            },
             types: ["LEC", "PRAC"]
         },
         "DS": {
             name: "Data Structures",
-            prof: "Prof. Kajal Sharma",
+            prof: {
+                "A": "Prof. D.M. Dalgade",
+                "F": "Prof. Kajal Sharma"
+            },
             types: ["LEC", "PRAC"]
         },
         "EG": {
             name: "Engg. Graphics",
-            prof: "Prof. R.N. Shanmukha",
+            prof: {
+                "A": "Dr. Y.P. Deshmukh",
+                "F": "Prof. R.N. Shanmukha"
+            },
             types: ["LEC", "PRAC"]
         },
         "AM-II": {
             name: "Applied Maths-II",
-            prof: "Prof. B.B. Sawant",
+            prof: {
+                "A": "Prof. Shalini Sharma",
+                "F": "Prof. B.B. Sawant"
+            },
             types: ["LEC", "TUT"]
         },
         "SS&CS": {
             name: "Social Science",
-            prof: "Prof. D.K. Chakradev",
+            prof: {
+                "A": "Prof. D.K. Chakradev",
+                "F": "Prof. D.K. Chakradev"
+            },
             types: ["LEC", "PRAC"]
         },
         "WS-II": {
             name: "Workshop-II",
-            prof: "Workshop Staff",
+            prof: {
+                "A": "Workshop Staff",
+                "F": "Workshop Staff"
+            },
             types: ["PRAC"]
         }
     },
 
-    schedule: {
-        1: [ // MON
-            {
-                t: "08:30",
-                e: "09:30",
-                c: "EP",
-                type: "LEC",
-                r: "C-22"
-            },
-            {
-                t: "09:30",
-                e: "10:30",
-                c: "EC",
-                type: "LEC",
-                r: "C-22"
-            },
-            {
-                t: "10:30",
-                e: "11:30",
-                c: "IKS",
-                type: "LEC",
-                r: "C-22"
-            },
-            {
-                t: "11:30",
-                e: "12:30",
-                c: "PP",
-                type: "LEC",
-                r: "C-22"
-            },
-            {
-                t: "12:30",
-                e: "13:15",
-                type: "BREAK",
-                name: "RECESS"
-            },
-            {
-                t: "13:15",
-                e: "15:15",
-                map: {
-                    "F1": "WS-II",
-                    "F2": "WS-II",
-                    "F3": "DS"
+    schedules: {
+        // --- DIVISION A SCHEDULE ---
+        "A": {
+            1: [ // MON
+                { t: "08:30", e: "10:30", c: "PP", type: "PRAC", r:"B-11" },
+                { t: "10:30", e: "11:30", c: "AM-II", type: "LEC", r: "B-21" },
+                { t: "11:30", e: "12:30", c: "EC", type: "LEC", r: "B-21" },
+                { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
+                { t: "13:15", e: "14:15", c: "IKS", type: "LEC", r: "B-21" }
+            ],
+            2: [ // TUE
+                { t: "08:30", e: "09:30", c: "EG", type: "LEC", r: "B-21" },
+                { t: "09:30", e: "10:30", c: "EP", type: "LEC", r: "B-21" },
+                { t: "10:30", e: "12:30", 
+                  map: { "A2": "DS" }, 
+                  rMap: { "A2":"DS Lab" },
+                  type: "PRAC" 
                 },
-                rMap: {
-                    "F1": "Workshop",
-                    "F2": "Workshop",
-                    "F3": "B-11"
+                { t: "10:30", e: "11:30", 
+                  map: { "A1": "EP", "A3": "EC" }, 
+                  rMap: { "A1":"Phy Lab", "A3":"Chem Lab" },
+                  type: "PRAC" 
                 },
-                type: "PRAC"
-            },
-            {
-                t: "15:15",
-                e: "16:15",
-                c: "AM-II",
-                type: "TUT",
-                r: "B-11"
-            }
-        ],
-        2: [ // TUE
-            // 1. Combined 2-Hour Practical for F1 (DS) & F3 (WS-II)
-            {
-                t: "08:30",
-                e: "10:30",
-                map: {
-                    "F1": "DS",
-                    "F3": "WS-II"
+                { t: "11:30", e: "12:30", 
+                  map: { "A1": "EC", "A3": "EP" }, 
+                  rMap: { "A1":"Chem Lab", "A3":"Phy Lab" },
+                  type: "PRAC" 
                 },
-                rMap: {
-                    "F3": "Workshop"
+                { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
+                { t: "13:15", e: "14:15", c: "AM-II", type: "LEC", r: "B-21" },
+                { t: "14:15", e: "15:15", c: "PP", type: "LEC", r: "B-21" },
+                { t: "15:15", e: "16:15", c: "IKS", type: "LEC", r: "B-21" }
+            ],
+            3: [ // WED
+                { t: "08:30", e: "09:30", c: "IKS", type: "LEC", r: "B-21" },
+                { t: "09:30", e: "10:30", c: "DS", type: "LEC", r: "B-21" },
+                { t: "10:30", e: "11:30", c: "EC", type: "LEC", r: "B-21" },
+                { t: "11:30", e: "12:30", c: "EG", type: "LEC", r: "B-21" },
+                { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
+                { t: "13:15", e: "15:15", 
+                   c: "EG", 
+                   rMap: { "A1":"B-21", "A2":"B-21", "A3":"C-23" },
+                   type: "PRAC" 
                 },
-                type: "PRAC"
-            },
+                { t: "15:15", e: "16:15", c: "AM-II", type: "TUT", r: "B-11" }
+            ],
+            4: [ // THU
+                { t: "08:30", e: "10:30",
+                  map: { "A1": "DS", "A3": "WS-II" },
+                  rMap: { "A1":"DS Lab", "A3":"Workshop" },
+                  type: "PRAC"
+                },
+                { t: "08:30", e: "09:30",
+                  map: { "A2": "EC", },
+                  rMap: { "A2":"Chem Lab", },
+                  type: "PRAC"
+                },
+                { t: "09:30", e: "10:30",
+                  map: { "A2": "EP", },
+                  rMap: { "A2":"Phy Lab", },
+                  type: "PRAC"
+                },
+                { t: "10:30", e: "11:30", c: "SS&CS", type: "LEC", r: "A-26" },
+                { t: "11:30", e: "12:30", type: "BREAK", name: "RECESS" },
+                { t: "12:30", e: "13:15", c: "EP", type: "LEC", r: "B-21" },
+                { t: "13:15", e: "14:15", c: "AM-II", type: "LEC", r: "B-21" },
+                { t: "14:15", e: "15:15", c: "SS&CS", type: "LEC", r: "B-21" }
+            ],
+            5: [ // FRI
+                { t: "08:30", e: "10:30",
+                  map: { "A1": "WS-II", "A2": "WS-II", "A3": "DS" },
+                  rMap: { "A1":"Workshop", "A2":"Workshop", "A3":"DS Lab" },
+                  type: "PRAC"
+                },
+                { t: "10:30", e: "11:30", c: "PP", type: "LEC", r: "C-22" },
+                { t: "11:30", e: "12:30", c: "EG", type: "LEC", r: "C-22" },
+                { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
+                { t: "13:15", e: "14:15", c: "DS", type: "LEC", r: "C-22" },
+                { t: "14:15", e: "15:15", c: "SS&CS", type: "LEC", r: "C-22" }
+            ]
+        },
 
-            // 2. Separate 1-Hour Practicals ONLY for F2 (EC & EP)
-            {
-                t: "08:30",
-                e: "09:30",
-                map: {
-                    "F2": "EC"
-                },
-                type: "PRAC"
-            },
-            {
-                t: "09:30",
-                e: "10:30",
-                map: {
-                    "F2": "EP"
-                },
-                type: "PRAC"
-            },
-
-            // 3. Rest of the day
-            {
-                t: "10:30",
-                e: "11:30",
-                c: "DS",
-                type: "LEC",
-                r: "B-22"
-            },
-            {
-                t: "11:30",
-                e: "12:30",
-                c: "PP",
-                type: "LEC",
-                r: "B-22"
-            },
-            {
-                t: "12:30",
-                e: "13:15",
-                type: "BREAK",
-                name: "RECESS"
-            },
-            {
-                t: "13:15",
-                e: "15:15",
-                c: "SS&CS",
-                type: "PRAC",
-                r: "C-26"
-            }
-        ],
-        3: [ // WED
-            // 1. Combined 2-Hour Practical for F2 (DS)
-            {
-                t: "08:30",
-                e: "10:30",
-                map: {
-                    "F2": "DS",
-                },
-                type: "PRAC"
-            },
-            // 2. Separate 1-Hour Practicals ONLY for F1 & F2 (EC & EP)
-            {
-                t: "08:30",
-                e: "09:30",
-                map: {
-                    "F1": "EP",
-                    "F3": "EC"
-                },
-                type: "PRAC"
-            },
-            {
-                t: "09:30",
-                e: "10:30",
-                map: {
-                    "F1": "EC",
-                    "F3": "EP"
-                },
-                type: "PRAC"
-            },
-            {
-                t: "10:30",
-                e: "12:30",
-                c: "IKS",
-                type: "PRAC",
-                r: "A-26"
-            },
-            {
-                t: "12:30",
-                e: "13:15",
-                type: "BREAK",
-                name: "RECESS"
-            },
-            {
-                t: "13:15",
-                e: "14:15",
-                c: "EG",
-                type: "LEC",
-                r: "C-22"
-            },
-            {
-                t: "14:15",
-                e: "15:15",
-                c: "AM-II",
-                type: "LEC",
-                r: "C-22"
-            },
-            {
-                t: "15:15",
-                e: "16:15",
-                c: "IKS",
-                type: "LEC",
-                r: "C-22"
-            }
-        ],
-        4: [ // THU
-            {
-                t: "08:30",
-                e: "09:30",
-                c: "SS&CS",
-                type: "LEC",
-                r: "C-22"
-            },
-            {
-                t: "09:30",
-                e: "10:30",
-                c: "EG",
-                type: "LEC",
-                r: "C-22"
-            },
-            {
-                t: "10:30",
-                e: "12:15",
-                c: "PP",
-                type: "PRAC",
-                r: "B-11"
-            },
-            {
-                t: "12:15",
-                e: "13:15",
-                type: "BREAK",
-                name: "RECESS"
-            },
-            {
-                t: "13:15",
-                e: "14:15",
-                c: "DS",
-                type: "LEC",
-                r: "B-22"
-            },
-            {
-                t: "14:15",
-                e: "15:15",
-                c: "AM-II",
-                type: "LEC",
-                r: "B-22"
-            }
-        ],
-        5: [ // FRI
-            {
-                t: "08:30",
-                e: "09:30",
-                c: "EC",
-                type: "LEC",
-                r: "B-23"
-            },
-            {
-                t: "09:30",
-                e: "10:30",
-                c: "SS&CS",
-                type: "LEC",
-                r: "B-23"
-            },
-            {
-                t: "10:30",
-                e: "11:30",
-                c: "AM-II",
-                type: "LEC",
-                r: "B-23"
-            },
-            {
-                t: "11:30",
-                e: "12:30",
-                c: "EP",
-                type: "LEC",
-                r: "B-23"
-            },
-            {
-                t: "12:30",
-                e: "13:15",
-                type: "BREAK",
-                name: "RECESS"
-            },
-            {
-                t: "13:15",
-                e: "14:15",
-                c: "EG",
-                type: "LEC",
-                r: "B-23"
-            },
-            {
-                t: "14:15",
-                e: "16:15",
-                c: "EG",
-                rMap: {
-                    "F1": "B-23",
-                    "F2": "B-23",
-                    "F3": "C-23"
-                },
-                type: "PRAC"
-            }
-        ]
+        // --- DIVISION F SCHEDULE ---
+        "F": {
+            1: [ // MON
+                { t: "08:30", e: "09:30", c: "EP", type: "LEC", r: "C-22" },
+                { t: "09:30", e: "10:30", c: "EC", type: "LEC", r: "C-22" },
+                { t: "10:30", e: "11:30", c: "IKS", type: "LEC", r: "C-22" },
+                { t: "11:30", e: "12:30", c: "PP", type: "LEC", r: "C-22" },
+                { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
+                { t: "13:15", e: "15:15", map: { "F1": "WS-II", "F2": "WS-II", "F3": "DS" }, rMap: { "F1": "Workshop", "F2": "Workshop", "F3": "DS Lab" }, type: "PRAC" },
+                { t: "15:15", e: "16:15", c: "AM-II", type: "TUT", r: "B-11" }
+            ],
+            2: [ // TUE
+                { t: "08:30", e: "10:30", map: { "F1": "DS", "F3": "WS-II" }, rMap: { "F1": "DS Lab", "F3": "Workshop" }, type: "PRAC" },
+                { t: "08:30", e: "09:30", map: { "F2": "EC" }, rMap: { "F2": "Chem Lab" }, type: "PRAC" },
+                { t: "09:30", e: "10:30", map: { "F2": "EP" }, rMap: { "F2": "Phy Lab" }, type: "PRAC" },
+                { t: "10:30", e: "11:30", c: "DS", type: "LEC", r: "B-22" },
+                { t: "11:30", e: "12:30", c: "PP", type: "LEC", r: "B-22" },
+                { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
+                { t: "13:15", e: "15:15", c: "SS&CS", type: "PRAC", r: "C-26" }
+            ],
+            3: [ // WED
+                { t: "08:30", e: "10:30", map: { "F2": "DS" }, rMap: { "F2": "DS Lab" }, type: "PRAC" },
+                { t: "08:30", e: "09:30", map: { "F1": "EP", "F3": "EC" }, rMap: { "F1": "Phy Lab", "F3": "Chem Lab" }, type: "PRAC" },
+                { t: "09:30", e: "10:30", map: { "F1": "EC", "F3": "EP" }, rMap: { "F1": "Chem Lab", "F3": "Phy Lab" }, type: "PRAC" },
+                { t: "10:30", e: "12:30", c: "IKS", type: "PRAC", r: "A-26" },
+                { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
+                { t: "13:15", e: "14:15", c: "EG", type: "LEC", r: "C-22" },
+                { t: "14:15", e: "15:15", c: "AM-II", type: "LEC", r: "C-22" },
+                { t: "15:15", e: "16:15", c: "IKS", type: "LEC", r: "C-22" }
+            ],
+            4: [ // THU
+                { t: "08:30", e: "09:30", c: "SS&CS", type: "LEC", r: "C-22" },
+                { t: "09:30", e: "10:30", c: "EG", type: "LEC", r: "C-22" },
+                { t: "10:30", e: "12:15", c: "PP", type: "PRAC", r: "B-11" },
+                { t: "12:15", e: "13:15", type: "BREAK", name: "RECESS" },
+                { t: "13:15", e: "14:15", c: "DS", type: "LEC", r: "B-22" },
+                { t: "14:15", e: "15:15", c: "AM-II", type: "LEC", r: "B-22" }
+            ],
+            5: [ // FRI
+                { t: "08:30", e: "09:30", c: "EC", type: "LEC", r: "B-23" },
+                { t: "09:30", e: "10:30", c: "SS&CS", type: "LEC", r: "B-23" },
+                { t: "10:30", e: "11:30", c: "AM-II", type: "LEC", r: "B-23" },
+                { t: "11:30", e: "12:30", c: "EP", type: "LEC", r: "B-23" },
+                { t: "12:30", e: "13:15", type: "BREAK", name: "RECESS" },
+                { t: "13:15", e: "14:15", c: "EG", type: "LEC", r: "B-23" },
+                { t: "14:15", e: "16:15", c: "EG", rMap: { "F1": "B-23", "F2": "B-23", "F3": "C-23" }, type: "PRAC" }
+            ]
+        }
     }
 };
 
@@ -594,12 +353,17 @@ const app = {
     extraClasses: {},
     currentExtraType: 'LEC',
 
-    // --- HELPER: Get correct local date string (YYYY-MM-DD) ---
     getSafeDateKey: function(dateObj) {
         const y = dateObj.getFullYear();
         const m = String(dateObj.getMonth() + 1).padStart(2, '0');
         const d = String(dateObj.getDate()).padStart(2, '0');
         return `${y}-${m}-${d}`;
+    },
+
+    // HELPER: Detect Division (A vs F)
+    getUserDiv: function() {
+        if(!this.user) return 'F';
+        return parseInt(this.user.id) < 400 ? 'A' : 'F'; 
     },
 
     init: function() {
@@ -622,7 +386,6 @@ const app = {
         if (navigator.vibrate) navigator.vibrate(50);
     },
 
-    // --- HUMOR GENERATOR ---
     getStatus: function(pct, totalT) {
         const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -682,7 +445,6 @@ const app = {
         const originalIcon = btn ? btn.innerHTML : '';
         if (btn) btn.innerHTML = '<i class="bi bi-hourglass-split"></i>';
 
-        // 1. Calculate Data
         let totalP = 0,
             totalT = 0;
         Object.values(this.globalStats).forEach(s => {
@@ -698,7 +460,6 @@ const app = {
             year: 'numeric'
         });
 
-        // 2. Canvas Setup
         const canvas = document.createElement('canvas');
         const size = 1080;
         canvas.width = size;
@@ -709,7 +470,6 @@ const app = {
         ctx.fillStyle = "#050505";
         ctx.fillRect(0, 0, size, size);
 
-        // Faint Mesh Pattern
         ctx.lineWidth = 1;
         ctx.strokeStyle = "rgba(40, 40, 40, 0.3)";
         for (let i = 0; i < size; i += 108) {
@@ -723,68 +483,53 @@ const app = {
             ctx.stroke();
         }
 
-        // --- HELPER FUNCTION FOR BOXES ---
         function drawBox(x, y, w, h, color = "#161b22") {
             ctx.fillStyle = color;
             ctx.shadowBlur = 0;
             ctx.beginPath();
             ctx.roundRect(x, y, w, h, 32);
             ctx.fill();
-
-            // Inner Border
             ctx.lineWidth = 2;
             ctx.strokeStyle = "rgba(255,255,255,0.08)";
             ctx.stroke();
         }
 
-        // --- GRID LAYOUT DEFINITIONS ---
-        const pad = 60; // Padding from edge
-        const gap = 30; // Gap between boxes
+        const pad = 60;
+        const gap = 30;
         const boxW_Full = size - (pad * 2);
 
-        // 1. PROFILE CARD (Top Wide)
         const h1 = 240;
         drawBox(pad, pad, boxW_Full, h1);
 
-        // 2. MAIN SCORE CARD (Bottom Left - INCREASED HEIGHT)
-        const h2 = 520; // Increased from 450
+        const h2 = 520;
         const w2 = 550;
         drawBox(pad, pad + h1 + gap, w2, h2);
 
-        // 3. STATS STACK (Bottom Right - TALLER)
         const w3 = boxW_Full - w2 - gap;
-        const h3 = (h2 - gap) / 2; // Automatically grows with h2
-        // Top Stat Box
+        const h3 = (h2 - gap) / 2;
         drawBox(pad + w2 + gap, pad + h1 + gap, w3, h3);
-        // Bottom Stat Box
         drawBox(pad + w2 + gap, pad + h1 + gap + h3 + gap, w3, h3);
 
-        // 4. QUOTE CARD (Bottom Wide - SLIMMER)
-        const h4 = 130; // Reduced from 180
+        const h4 = 130;
         const y4 = pad + h1 + gap + h2 + gap;
 
-        // Use status color for this box background (faint)
         ctx.shadowBlur = 40;
         ctx.shadowColor = status.c;
         drawBox(pad, y4, boxW_Full, h4, "#0d1117");
-        ctx.strokeStyle = status.c; // Colored border
+        ctx.strokeStyle = status.c;
         ctx.lineWidth = 3;
         ctx.stroke();
         ctx.shadowBlur = 0;
 
-
-        // --- TEXT CONTENT ---
         ctx.textAlign = "left";
 
-        // 1. TOP CARD CONTENT
         ctx.fillStyle = "#8b949e";
         ctx.font = "600 24px Inter, sans-serif";
         ctx.fillText("ATTENDANCE STATUS", pad + 50, pad + 60);
 
-        // Date (Top Right - LARGER & WHITE)
         ctx.textAlign = "right";
         ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 32px Inter, sans-serif"; // Increased Size
+        ctx.font = "bold 32px Inter, sans-serif";
         ctx.fillText(dateStr, pad + boxW_Full - 50, pad + 65);
         ctx.textAlign = "left";
 
@@ -792,27 +537,25 @@ const app = {
         ctx.font = "800 65px Inter, sans-serif";
         ctx.fillText(this.user.n, pad + 45, pad + 145);
 
-        ctx.fillStyle = "#58a6ff"; // Blue Accent
+        // UPDATED: Removed separate Division text
+        ctx.fillStyle = "#58a6ff";
         ctx.font = "500 32px Inter, sans-serif";
-        ctx.fillText(`${this.user.id} • Batch ${this.user.b} • Div F`, pad + 50, pad + 195);
+        ctx.fillText(`${this.user.id} • Batch ${this.user.b}`, pad + 50, pad + 195);
 
-        // 2. SCORE CONTENT (With GLOW)
         const cx = pad + (w2 / 2);
         const cy = pad + h1 + gap + (h2 / 2);
-        const r = 160; // Larger Radius
+        const r = 160;
 
-        // Track
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, Math.PI * 2);
         ctx.lineWidth = 30;
         ctx.strokeStyle = "rgba(255,255,255,0.05)";
         ctx.stroke();
 
-        // Indicator with GLOW
         const endAngle = ((pct / 100) * 2 * Math.PI) - 0.5 * Math.PI;
 
-        ctx.shadowBlur = 50; // Neon Glow Strength
-        ctx.shadowColor = status.c; // Glow Color
+        ctx.shadowBlur = 50;
+        ctx.shadowColor = status.c;
 
         ctx.beginPath();
         ctx.arc(cx, cy, r, -0.5 * Math.PI, endAngle);
@@ -820,54 +563,48 @@ const app = {
         ctx.lineCap = "round";
         ctx.stroke();
 
-        ctx.shadowBlur = 0; // Reset
+        ctx.shadowBlur = 0;
 
         ctx.textAlign = "center";
         ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 110px Inter, sans-serif"; // Bigger Number
+        ctx.font = "bold 110px Inter, sans-serif";
         ctx.fillText(`${pct}%`, cx, cy + 38);
 
         ctx.font = "500 24px Inter, sans-serif";
         ctx.fillStyle = "#8b949e";
         ctx.fillText("Overall Attendance", cx, cy + 210);
 
-        // 3. STATS CONTENT
-        // Stat 1: Attended
         let sx = pad + w2 + gap + (w3 / 2);
         let sy = pad + h1 + gap + (h3 / 2);
 
-        ctx.fillStyle = "#3fb950"; // Green
-        ctx.font = "bold 90px Inter, sans-serif"; // Bigger Stats
+        ctx.fillStyle = "#3fb950";
+        ctx.font = "bold 90px Inter, sans-serif";
         ctx.fillText(totalP, sx, sy + 25);
 
         ctx.fillStyle = "#8b949e";
         ctx.font = "500 22px Inter, sans-serif";
         ctx.fillText("LECTURES ATTENDED", sx, sy + 70);
 
-        // Stat 2: Total
         sy = pad + h1 + gap + h3 + gap + (h3 / 2);
 
         ctx.fillStyle = "#ffffff";
-        ctx.font = "bold 90px Inter, sans-serif"; // Bigger Stats
+        ctx.font = "bold 90px Inter, sans-serif";
         ctx.fillText(totalT, sx, sy + 25);
 
         ctx.fillStyle = "#8b949e";
         ctx.font = "500 22px Inter, sans-serif";
         ctx.fillText("TOTAL CONDUCTED", sx, sy + 70);
 
-        // 4. QUOTE CONTENT
         const qy = y4 + (h4 / 2);
         ctx.fillStyle = status.c;
         ctx.font = "bold 40px Inter, sans-serif";
         ctx.fillText(status.t, size / 2, qy + 15);
 
-        // 5. FOOTER
         ctx.font = "600 22px Inter, sans-serif";
         ctx.fillStyle = "#2f81f7";
         ctx.textAlign = "center";
         ctx.fillText("Designed by Vaibhav", size / 2, size - 35);
 
-        // --- EXPORT ---
         canvas.toBlob(async (blob) => {
             const file = new File([blob], `Attendance_${this.user.id}.png`, {
                 type: "image/png"
@@ -893,11 +630,16 @@ const app = {
     },
 
     resetData: function() {
-        if (confirm('⚠️ Are you sure? This will delete ALL your attendance data permanently.')) {
-            localStorage.removeItem(`log_${this.user.id}`);
-            localStorage.removeItem(`stats_${this.user.id}`);
-            location.reload();
-        }
+        this.showConfirmModal(
+            '⚠️ Reset All Data',
+            'Are you sure? This will delete <strong>ALL</strong> your attendance data permanently. This action cannot be undone.',
+            () => {
+                localStorage.removeItem(`log_${this.user.id}`);
+                localStorage.removeItem(`stats_${this.user.id}`);
+                location.reload();
+            },
+            'Delete Everything'
+        );
     },
 
     login: function() {
@@ -941,6 +683,8 @@ const app = {
 
         const firstName = this.user.n.split(" ")[1] || this.user.n.split(" ")[0];
         document.getElementById('userName').innerText = firstName;
+        
+        // UPDATED: Only show Batch (e.g. "F1"), removed "F - F1"
         document.getElementById('userBatch').innerText = this.user.b;
 
         this.updateOverall();
@@ -1017,10 +761,12 @@ const app = {
         container.innerHTML = '';
 
         const dayIdx = date.getDay();
-        // Use local date string to fix timezone bugs
         const dateKey = this.getSafeDateKey(date);
 
-        let todaysClasses = RGIT_DATA.schedule[dayIdx] ? [...RGIT_DATA.schedule[dayIdx]] : [];
+        const div = this.getUserDiv();
+        const schedule = RGIT_DATA.schedules[div] || {};
+        
+        let todaysClasses = schedule[dayIdx] ? [...schedule[dayIdx]] : [];
         if (this.extraClasses[dateKey]) {
             todaysClasses = [...todaysClasses, ...this.extraClasses[dateKey]];
         }
@@ -1052,41 +798,33 @@ const app = {
 
             let code = slot.c;
             if (slot.map) code = slot.map[this.user.b];
-            if (!code) return; // Skip if slot not for this batch
+            if (!code) return;
 
             let room = slot.r || "";
             if (slot.rMap) room = slot.rMap[this.user.b];
             const roomHtml = room ? `<div class="room-loc"><i class="bi bi-geo-alt-fill"></i> ${room}</div>` : '';
 
-            // 1. Stats Key: Grouping for Math (Subject + Type)
             const statsKey = `${code}_${slot.type}`;
-
-            // 2. HYBRID KEY LOGIC (The Fix)
             const uniqueTime = slot.t.replace(':', '');
-            // New Format: Subject_Type_Time (e.g., EP_LEC_0830)
             const modernKey = (slot.isExtra && slot.id) ? slot.id : `${statsKey}_${uniqueTime}`;
-            // Old Format: Subject_Type (e.g., EP_LEC)
             const legacyKey = statsKey;
 
-            // Detect which key actually holds the data
-            let activeLogKey = modernKey; // Default to new format
+            let activeLogKey = modernKey;
             let dailyStatus = null;
 
             if (this.attendanceLog[dateKey]) {
                 if (this.attendanceLog[dateKey][modernKey]) {
-                    // Case A: Found data in NEW format
                     dailyStatus = this.attendanceLog[dateKey][modernKey];
                 } else if (this.attendanceLog[dateKey][legacyKey]) {
-                    // Case B: Found data in OLD format (Fallback)
                     dailyStatus = this.attendanceLog[dateKey][legacyKey];
-                    activeLogKey = legacyKey; // Bind button to old key so we can toggle it off
+                    activeLogKey = legacyKey;
                 }
             }
 
-            const meta = RGIT_DATA.subjects[code] || {
-                name: code,
-                prof: ""
-            };
+            const meta = RGIT_DATA.subjects[code] || { name: code, prof: {} };
+            
+            // --- NEW: Select prof based on Division ---
+            const profName = meta.prof ? (meta.prof[div] || "") : "";
 
             if (!this.globalStats[statsKey]) this.globalStats[statsKey] = {
                 p: 0,
@@ -1106,14 +844,14 @@ const app = {
             container.innerHTML += `
             <div class="timeline-row">
                 <div class="time-col"><div>${this.formatTime(slot.t)}</div><div class="end-time">${this.formatTime(slot.e)}</div>${roomHtml}</div>
-                <div class="line-col"><div class="dot ${this.isNow(slot.t) ? 'active' : ''}"></div><div class="line"></div></div>
+                <div class="line-col"><div class="dot ${this.isNow(slot.t, slot.e) ? 'active' : ''}"></div><div class="line"></div></div>
                 <div class="card-col">
-                    <div class="class-card ${this.isNow(slot.t) ? 'now-glow' : ''}">
+                    <div class="class-card ${this.isNow(slot.t, slot.e) ? 'now-glow' : ''}">
                         
                         <div class="card-header">
                             <div class="subject-info">
                                 <div class="subject-row"><span class="code">${code}</span><span class="tag ${slot.type}">${slot.type}</span></div>
-                                <span class="name">${meta.name}</span><span class="prof">${meta.prof}</span>
+                                <span class="name">${meta.name}</span><span class="prof">${profName}</span>
                             </div>
 
                             <div class="header-right">
@@ -1145,24 +883,19 @@ const app = {
             <div class="scroll-credit" style="margin-top: 20px;">Made with ❤️ by <b>Vaibhav</b></div>`;
     },
 
-    // UPDATED: Now accepts logKey (for memory) and statsKey (for math)
     toggle: function(dateKey, logKey, statsKey, newStatus) {
         this.vibrate();
         if (!this.attendanceLog[dateKey]) this.attendanceLog[dateKey] = {};
 
-        // 1. Check Previous Status using the unique LOG KEY
         const currentStatus = this.attendanceLog[dateKey][logKey];
 
-        // 2. Prepare Stats using the Grouped STATS KEY
         if (!this.globalStats[statsKey]) this.globalStats[statsKey] = {
             p: 0,
             t: 0
         };
         let stats = this.globalStats[statsKey];
 
-        // 3. Update Logic
         if (currentStatus) {
-            // Remove effect of old status
             if (currentStatus === 'P') {
                 stats.p--;
                 stats.t--;
@@ -1170,12 +903,10 @@ const app = {
             if (currentStatus === 'A') {
                 stats.t--;
             }
-            // Remove from daily log
             delete this.attendanceLog[dateKey][logKey];
         }
 
         if (currentStatus !== newStatus) {
-            // Add effect of new status
             if (newStatus === 'P') {
                 stats.p++;
                 stats.t++;
@@ -1183,7 +914,6 @@ const app = {
             if (newStatus === 'A') {
                 stats.t++;
             }
-            // Save to daily log
             this.attendanceLog[dateKey][logKey] = newStatus;
         }
 
@@ -1220,19 +950,12 @@ const app = {
                     if (pct >= 75) {
                         colorVar = 'var(--green-bar)';
                         predClass = 'pred-green';
-
-                        // Formula: How many more can I miss and stay >= 75%?
-                        // (Present) / (Total + X) = 0.75  =>  X = (Present/0.75) - Total
                         const buffer = Math.floor((stats.p / 0.75) - stats.t);
-
                         predMsg = buffer > 0 ?
                             `Safe! You can bunk <b>${buffer}</b> next ${type}s.` :
                             `Safe, but don't miss the next one!`;
                     } else {
-                        // Formula: How many must I attend to reach 75%?
-                        // (Present + X) / (Total + X) = 0.75  =>  X = (0.75*Total - Present) / 0.25
                         const need = Math.ceil((0.75 * stats.t - stats.p) / 0.25);
-
                         predMsg = `Danger! You must attend <b>${need}</b> more ${type}s.`;
                         if (pct >= 60) colorVar = 'var(--yellow-bar)';
                     }
@@ -1285,19 +1008,33 @@ const app = {
         }
     },
 
-    isNow: function(t) {
-        const h = new Date().getHours();
-        const slotH = parseInt(t.split(':')[0]);
-        return h === slotH;
+    isNow: function(t, e) {
+        // Get current time in minutes (e.g., 9:30 AM = 570 minutes)
+        const now = new Date();
+        const currentMins = now.getHours() * 60 + now.getMinutes();
+
+        // Parse Start Time
+        const [sh, sm] = t.split(':').map(Number);
+        const startMins = sh * 60 + sm;
+
+        // Parse End Time (Default to 1 hour duration if 'e' is missing)
+        let endMins;
+        if (e) {
+            const [eh, em] = e.split(':').map(Number);
+            endMins = eh * 60 + em;
+        } else {
+            endMins = startMins + 60;
+        }
+
+        // Check if current time is between Start and End
+        return currentMins >= startMins && currentMins < endMins;
     },
 
-    // --- EXTRA CLASS FUNCTIONS ---
     openAddModal: function() {
         const modal = document.getElementById('addModal');
         const select = document.getElementById('extraSub');
         select.innerHTML = '';
 
-        // 1. Populate Subjects
         Object.keys(RGIT_DATA.subjects).forEach(code => {
             const sub = RGIT_DATA.subjects[code];
             const opt = document.createElement('option');
@@ -1306,12 +1043,10 @@ const app = {
             select.appendChild(opt);
         });
 
-        // 2. Add listener to update buttons when subject changes
         select.onchange = () => {
             this.renderModalTypes(select.value);
         };
 
-        // 3. Initialize for the first subject in the list
         if (select.options.length > 0) {
             this.renderModalTypes(select.value);
         }
@@ -1319,7 +1054,6 @@ const app = {
         modal.classList.remove('hidden');
     },
 
-    // NEW: Generates the buttons dynamically (LEC/PRAC/TUT)
     renderModalTypes: function(code) {
         const types = RGIT_DATA.subjects[code].types;
         const container = document.querySelector('.type-selector');
@@ -1327,7 +1061,6 @@ const app = {
 
         types.forEach((type, index) => {
             const btn = document.createElement('div');
-            // If currentExtraType matches, make it active, else default to first
             const isActive = (index === 0);
             if (isActive) this.currentExtraType = type;
 
@@ -1344,19 +1077,37 @@ const app = {
         });
     },
 
-    // (The setExtraType function is no longer needed as it's handled inside renderModalTypes)
-
     saveExtraClass: function() {
         const code = document.getElementById('extraSub').value;
-        const time = document.getElementById('extraTime').value;
+        const startTime = document.getElementById('extraTime').value;
+        const endTime = document.getElementById('extraEndTime').value;
 
-        // FIX: Use local date instead of UTC
+        // Basic Validation
+        if (!startTime || !endTime) {
+            this.showConfirmModal(
+                'Validation Error',
+                'Please select both Start and End time.',
+                () => {},
+                'OK'
+            );
+            return;
+        }
+        if (endTime <= startTime) {
+            this.showConfirmModal(
+                'Validation Error',
+                'End time must be after Start time.',
+                () => {},
+                'OK'
+            );
+            return;
+        }
+
         const dateKey = this.getSafeDateKey(this.selectedDate);
 
         const newClass = {
             id: `ex_${Date.now()}`,
-            t: time,
-            e: time,
+            t: startTime,
+            e: endTime,     // Now uses the selected end time
             c: code,
             type: this.currentExtraType,
             isExtra: true
@@ -1370,32 +1121,31 @@ const app = {
         this.loadDay(this.selectedDate);
     },
 
-    // --- IMPROVED: Delete without Page Reload ---
     deleteExtraClass: function(dateKey, classId) {
-        if (confirm('Delete this extra class?')) {
-            // 1. Remove from extraClasses array
-            if (this.extraClasses[dateKey]) {
-                this.extraClasses[dateKey] = this.extraClasses[dateKey].filter(c => c.id !== classId);
-                if (this.extraClasses[dateKey].length === 0) delete this.extraClasses[dateKey];
-            }
+        this.showConfirmModal(
+            'Delete Extra Class',
+            'Are you sure you want to delete this extra class? Any attendance marked for this class will also be removed.',
+            () => {
+                if (this.extraClasses[dateKey]) {
+                    this.extraClasses[dateKey] = this.extraClasses[dateKey].filter(c => c.id !== classId);
+                    if (this.extraClasses[dateKey].length === 0) delete this.extraClasses[dateKey];
+                }
 
-            // 2. Remove from logs
-            if (this.attendanceLog[dateKey] && this.attendanceLog[dateKey][classId]) {
-                delete this.attendanceLog[dateKey][classId];
-            }
+                if (this.attendanceLog[dateKey] && this.attendanceLog[dateKey][classId]) {
+                    delete this.attendanceLog[dateKey][classId];
+                }
 
-            // 3. Save Data
-            localStorage.setItem(`extra_${this.user.id}`, JSON.stringify(this.extraClasses));
-            localStorage.setItem(`log_${this.user.id}`, JSON.stringify(this.attendanceLog));
+                localStorage.setItem(`extra_${this.user.id}`, JSON.stringify(this.extraClasses));
+                localStorage.setItem(`log_${this.user.id}`, JSON.stringify(this.attendanceLog));
 
-            // 4. Recalculate Stats & UI (No Reload Needed!)
-            this.recalculateAllStats();
-            this.loadDay(this.selectedDate);
-            this.updateOverall();
-        }
+                this.recalculateAllStats();
+                this.loadDay(this.selectedDate);
+                this.updateOverall();
+            },
+            'Delete Class'
+        );
     },
 
-    // --- NEW: True Stats Recalculation (Self-Healing) ---
     recalculateAllStats: function() {
         const newStats = {};
 
@@ -1406,18 +1156,15 @@ const app = {
                 const status = dayLog[key];
                 let subjectKey = key;
 
-                // 1. Extra Class (ex_...)
                 if (key.startsWith('ex_')) {
                     const daysExtras = this.extraClasses[date] || [];
                     const extraClass = daysExtras.find(e => e.id === key);
                     if (extraClass) subjectKey = `${extraClass.c}_${extraClass.type}`;
                     else return;
                 }
-                // 2. Modern Key (Suffix _0830) -> Strip it to get subject
                 else if (key.match(/_\d{4}$/)) {
                     subjectKey = key.replace(/_\d{4}$/, '');
                 }
-                // 3. Legacy Key (No Suffix) -> Use as is
 
                 if (!newStats[subjectKey]) newStats[subjectKey] = {
                     p: 0,
@@ -1436,9 +1183,225 @@ const app = {
         this.globalStats = newStats;
         localStorage.setItem(`stats_${this.user.id}`, JSON.stringify(this.globalStats));
     },
+
+    // Custom confirmation modal functions
+    showConfirmModal: function(title, message, confirmCallback, confirmBtnText = 'Confirm') {
+        document.getElementById('confirmTitle').innerText = title;
+        document.getElementById('confirmMessage').innerHTML = message;
+        document.getElementById('confirmBtn').innerText = confirmBtnText;
+        this.pendingConfirmCallback = confirmCallback;
+        document.getElementById('confirmModal').classList.remove('hidden');
+    },
+
+    closeConfirmModal: function() {
+        document.getElementById('confirmModal').classList.add('hidden');
+        this.pendingConfirmCallback = null;
+    },
+
+    confirmAction: function() {
+        if (this.pendingConfirmCallback) {
+            this.pendingConfirmCallback();
+            this.pendingConfirmCallback = null;
+        }
+        this.closeConfirmModal();
+    },
+
+    // Toast notification system
+    showToast: function(message, type = 'success', duration = 3000) {
+        const toastContainer = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}" aria-hidden="true"></i>
+                <span>${message}</span>
+            </div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        // Trigger animation
+        setTimeout(() => toast.classList.add('show'), 10);
+
+        // Auto remove
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+    },
+
+    // Enhanced login with loading state
+    login: function() {
+        const btn = document.querySelector('.btn-primary');
+        const originalHTML = btn.innerHTML;
+
+        // Show loading state
+        btn.classList.add('loading');
+        btn.innerHTML = `
+            <span class="sr-only">Logging in...</span>
+            <div class="btn-loader">
+                <div class="spinner" aria-hidden="true"></div>
+            </div>
+        `;
+
+        const r = document.getElementById('rollInput').value.trim();
+        const student = RGIT_DATA.students[r];
+
+        // Simulate processing time for better UX
+        setTimeout(() => {
+            if (student) {
+                this.user = {
+                    id: r,
+                    ...student
+                };
+                const remember = document.getElementById('rememberMe').checked;
+                if (remember) localStorage.setItem('rgit_user', JSON.stringify(this.user));
+                else sessionStorage.setItem('rgit_user', JSON.stringify(this.user));
+
+                this.showToast('Login successful! Welcome back.', 'success');
+                this.init();
+            } else {
+                // Reset button
+                btn.classList.remove('loading');
+                btn.innerHTML = originalHTML;
+
+                document.getElementById('errorMsg').innerText = "Roll number not found!";
+                document.getElementById('errorMsg').style.display = 'block';
+                this.showToast('Invalid roll number. Please try again.', 'error');
+            }
+        }, 800);
+    },
+
+    // Enhanced logout with confirmation
+    logout: function() {
+        this.showConfirmModal(
+            'Logout',
+            'Are you sure you want to logout? Your session will end.',
+            () => {
+                localStorage.removeItem('rgit_user');
+                sessionStorage.removeItem('rgit_user');
+                this.showToast('Logged out successfully.', 'success');
+                setTimeout(() => location.reload(), 500);
+            },
+            'Logout'
+        );
+    },
+
+    // Data export functionality
+    exportData: function() {
+        const data = {
+            user: this.user,
+            attendanceLog: this.attendanceLog,
+            globalStats: this.globalStats,
+            extraClasses: this.extraClasses,
+            exportDate: new Date().toISOString(),
+            version: '1.0'
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `rgit-attendance-${this.user.id}-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        this.showToast('Data exported successfully!', 'success');
+    },
+
+    // Data import functionality
+    importData: function() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+
+                        // Validate data structure
+                        if (data.user && data.attendanceLog && data.globalStats) {
+                            // Backup current data
+                            const backup = {
+                                attendanceLog: this.attendanceLog,
+                                globalStats: this.globalStats,
+                                extraClasses: this.extraClasses
+                            };
+
+                            // Import new data
+                            this.attendanceLog = data.attendanceLog;
+                            this.globalStats = data.globalStats;
+                            this.extraClasses = data.extraClasses || {};
+
+                            // Save to localStorage
+                            localStorage.setItem(`log_${this.user.id}`, JSON.stringify(this.attendanceLog));
+                            localStorage.setItem(`stats_${this.user.id}`, JSON.stringify(this.globalStats));
+                            localStorage.setItem(`extra_${this.user.id}`, JSON.stringify(this.extraClasses));
+
+                            this.recalculateAllStats();
+                            this.updateOverall();
+                            this.loadDay(this.selectedDate);
+
+                            this.showToast('Data imported successfully!', 'success');
+                        } else {
+                            throw new Error('Invalid data format');
+                        }
+                    } catch (error) {
+                        this.showToast('Failed to import data. Invalid file format.', 'error');
+                        console.error('Import error:', error);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        };
+        input.click();
+    },
+
+    // Keyboard navigation support
+    initKeyboardNavigation: function() {
+        document.addEventListener('keydown', (e) => {
+            // Escape key closes modals
+            if (e.key === 'Escape') {
+                if (!document.getElementById('confirmModal').classList.contains('hidden')) {
+                    this.closeConfirmModal();
+                } else if (!document.getElementById('addModal').classList.contains('hidden')) {
+                    document.getElementById('addModal').classList.add('hidden');
+                }
+            }
+
+            // Tab navigation for date strip
+            if (e.key === 'ArrowLeft' && e.target.closest('.date-strip')) {
+                e.preventDefault();
+                const currentIndex = Array.from(document.querySelectorAll('.date-item')).findIndex(el => el.classList.contains('active'));
+                if (currentIndex > 0) {
+                    const newDate = new Date(this.selectedDate);
+                    newDate.setDate(this.selectedDate.getDate() - 1);
+                    this.selectedDate = newDate;
+                    this.renderDateStrip();
+                    this.loadDay(newDate);
+                }
+            }
+
+            if (e.key === 'ArrowRight' && e.target.closest('.date-strip')) {
+                e.preventDefault();
+                const currentIndex = Array.from(document.querySelectorAll('.date-item')).findIndex(el => el.classList.contains('active'));
+                if (currentIndex < 6) {
+                    const newDate = new Date(this.selectedDate);
+                    newDate.setDate(this.selectedDate.getDate() + 1);
+                    this.selectedDate = newDate;
+                    this.renderDateStrip();
+                    this.loadDay(newDate);
+                }
+            }
+        });
+    },
 };
 
-// Start the App
 const inp = document.getElementById('rollInput');
 if (inp) {
     inp.addEventListener('focus', () => document.getElementById('loginView').classList.add('typing-mode'));
