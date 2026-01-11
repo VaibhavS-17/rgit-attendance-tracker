@@ -1112,7 +1112,7 @@ const app = {
         if (window.deferredPrompt) {
             installHtml = `<button onclick="app.triggerInstall()" style="background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 600; margin-bottom: 25px; cursor: pointer; display: flex; align-items: center; gap: 8px; margin-left: auto; margin-right: auto;"><i class="bi bi-download"></i> Install App</button>`;
         } else {
-            installHtml = `<div style="background: var(--bg-card); border: 1px dashed var(--border); padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 0.85rem; color: var(--text-muted);"><i class="bi bi-phone" style="font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; display: block;"></i><strong>Install App:</strong> Tap <i class="bi bi-three-dots-vertical"></i> or <i class="bi bi-share"></i> then select <br><b>"Add to Home Screen"</b></div>`;
+            installHtml = `<div style="background: var(--bg-card); border: 1px dashed var(--border); padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 0.85rem; color: var(--text-muted);"><i class="bi bi-phone" style="font-size: 1.2rem; color: var(--accent); margin-bottom: 6px; display: block;"></i><strong>Install App:</strong> Tap <i class="bi bi-three-dots-vertical"></i> or <i class="bi bi-share"></i> then select <br><b>"Add to Home Screen"</b> ==> <b>"Install"</b></div>`;
         }
 
         container.innerHTML += `
