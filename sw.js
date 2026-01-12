@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rgit-tracker-v22'; 
+const CACHE_NAME = 'rgit-tracker-v23'; 
 
 const ASSETS = [
   './',
