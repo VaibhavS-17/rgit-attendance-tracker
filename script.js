@@ -329,8 +329,8 @@ const RGIT_DATA = {
                 { t: "09:30", e: "10:30", c: "EG", type: "LEC", r: "C-22" },
                 { t: "10:30", e: "12:15", c: "PP", type: "PRAC", r: "B-11" },
                 { t: "12:15", e: "13:15", type: "BREAK", name: "RECESS" },
-                { t: "13:15", e: "14:15", c: "DS", type: "LEC", r: "B-22" },
-                { t: "14:15", e: "15:15", c: "AM-II", type: "LEC", r: "B-22" }
+                { t: "13:15", e: "14:15", c: "AM-II", type: "LEC", r: "B-22" },
+                { t: "14:15", e: "15:15", c: "DS", type: "LEC", r: "B-22" }
             ],
             5: [ // FRI
                 { t: "08:30", e: "09:30", c: "EC", type: "LEC", r: "B-23" },
