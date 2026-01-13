@@ -1534,57 +1534,9 @@ const app = {
     },
 };
 
-// Swipe gesture for date strip navigation
-let touchStartX = 0;
-let touchStartY = 0;
-let touchEndX = 0;
-let touchEndY = 0;
-let isSwipeListenerAdded = false;
-
-function addSwipeListener() {
-    if (isSwipeListenerAdded) return;
-    const dateStrip = document.getElementById('dateStrip');
-    if (dateStrip) {
-        dateStrip.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
-
-        dateStrip.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            touchEndY = e.changedTouches[0].screenY;
-            handleSwipe();
-        }, { passive: true });
-
-        isSwipeListenerAdded = true;
-    }
-}
-
-function handleSwipe() {
-    const deltaX = touchEndX - touchStartX;
-    const deltaY = touchEndY - touchStartY;
-    const minSwipeDistance = 50;
-    const maxVerticalDistance = 100;
-
-    if (Math.abs(deltaX) > minSwipeDistance && Math.abs(deltaY) < maxVerticalDistance) {
-        const newDate = new Date(app.selectedDate);
-        if (deltaX > 0) {
-            // Swipe right - previous day
-            newDate.setDate(app.selectedDate.getDate() - 1);
-        } else {
-            // Swipe left - next day
-            newDate.setDate(app.selectedDate.getDate() + 1);
-        }
-        app.selectedDate = newDate;
-        app.renderDateStrip();
-        app.loadDay(newDate);
-    }
-}
-
 const inp = document.getElementById('rollInput');
 if (inp) {
     inp.addEventListener('focus', () => document.getElementById('loginView').classList.add('typing-mode'));
     inp.addEventListener('blur', () => setTimeout(() => document.getElementById('loginView').classList.remove('typing-mode'), 200));
 }
 app.init();
-addSwipeListener();
